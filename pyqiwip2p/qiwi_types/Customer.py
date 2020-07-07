@@ -30,3 +30,10 @@ class QiwiCustomer:
 					self.account = str(account)
 			else:
 				raise ValueError("One of the values is missing")
+
+	def __repr__(self):
+		return {
+			"phone": self.phone,
+			"email": self.email,
+			"account": self.account
+		}
