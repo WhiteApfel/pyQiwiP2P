@@ -1,6 +1,6 @@
-from qiwi_types.Errors import QiwiError
+from pyqiwip2p.qiwi_types.Errors import QiwiError
 from requests import Response
-from qiwi_types.Customer import QiwiCustomer
+from pyqiwip2p.qiwi_types import QiwiCustomer
 
 
 class Bill:

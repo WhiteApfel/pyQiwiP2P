@@ -1,8 +1,8 @@
 import requests
 import typing
-from qiwi_types import QiwiDatetime
-from qiwi_types import QiwiCustomer
-from qiwi_types import Bill
+from pyqiwip2p.qiwi_types import QiwiDatetime
+from pyqiwip2p.qiwi_types import QiwiCustomer
+from pyqiwip2p.qiwi_types import Bill
 
 
 class QiwiP2P:
