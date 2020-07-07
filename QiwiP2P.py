@@ -2,7 +2,7 @@ import requests
 import typing
 from qiwi_types import QiwiDatetime
 from qiwi_types import QiwiCustomer
-from response.Responses import Bill
+from response import Bill
 
 
 class QiwiP2P:
@@ -12,7 +12,7 @@ class QiwiP2P:
 
 	def bill(self, bill_id: typing.Union[str, int], amount: typing.Union[int, float],
 				expiration: typing.Union[str, int, QiwiDatetime] = None,
-				customer: QiwiCustomer = None, comment: str = "via pyQiwiP2P"):
+				customer: QiwiCustomer = None, comment: str = "via pyQiwiP2P made by WhiteApfel"):
 		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime().expiration()
 		amount = str(round(float(amount), 2)) if len(str(float(amount)).split(".")[1]) > 1 else str(round(float(amount), 2))+"0"
 		qiwi_request_headers = {
