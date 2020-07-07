@@ -2,7 +2,7 @@ import requests
 import typing
 from qiwi_types import QiwiDatetime
 from qiwi_types import QiwiCustomer
-from response import Bill
+from qiwi_types import Bill
 
 
 class QiwiP2P:
