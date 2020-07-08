@@ -3,8 +3,26 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PyQiwiP2P's documentation!
-=====================================
+Документация PyQiwiP2P приветствует тебя!
+=========================================
+
+Обёрточка для `API Qiwi P2P`_ на Python.
+
+.. _`API Qiwi P2P`: https://developer.qiwi.com/ru/p2p-payments/#API
+
+Зависимости
+-----------
+
+.. literalinclude:: ../requirements.txt
+
+Установка
+---------
+
+.. code-block::
+
+   git clone https://github.com/WhiteApfel/pyQiwiP2P
+   cd pyQiwiP2P
+   python setup.py install
 
 .. toctree::
    :maxdepth: 4

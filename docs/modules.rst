@@ -1,7 +1,9 @@
-pyqiwip2p
-=========
+Клиент
+==============
 
-.. toctree::
-   :maxdepth: 4
+.. autoclass:: pyqiwip2p.QiwiP2P.QiwiP2P()
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
-   pyqiwip2p
+.. py:function:: pyqiwip2p.QiwiP2P.QiwiP2P.bill

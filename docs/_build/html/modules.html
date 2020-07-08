@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pyqiwip2p &#8212; документация PyQiwiP2P </title>
+    <title>Клиент &#8212; документация PyQiwiP2P </title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -18,8 +18,7 @@
     
     <link rel="index" title="Алфавитный указатель" href="genindex.html" />
     <link rel="search" title="Поиск" href="search.html" />
-    <link rel="next" title="pyqiwip2p package" href="pyqiwip2p.html" />
-    <link rel="prev" title="Welcome to PyQiwiP2P’s documentation!" href="index.html" /> 
+    <link rel="prev" title="Документация PyQiwiP2P приветствует тебя!" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Навигация</h3>
@@ -31,13 +30,10 @@
           <a href="py-modindex.html" title="Содержание модулей Python"
              >модули</a> |</li>
         <li class="right" >
-          <a href="pyqiwip2p.html" title="pyqiwip2p package"
-             accesskey="N">вперёд</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to PyQiwiP2P’s documentation!"
+          <a href="index.html" title="Документация PyQiwiP2P приветствует тебя!"
              accesskey="P">назад</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">документация PyQiwiP2P </a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyqiwip2p</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Клиент</a></li> 
       </ul>
     </div>  
 
@@ -46,30 +42,83 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyqiwip2p">
-<h1>pyqiwip2p<a class="headerlink" href="#pyqiwip2p" title="Ссылка на этот заголовок">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pyqiwip2p.html">pyqiwip2p package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyqiwip2p.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyqiwip2p.qiwi_types.html">pyqiwip2p.qiwi_types package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#module-pyqiwip2p.qiwi_types.Customer">pyqiwip2p.qiwi_types.Customer module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#module-pyqiwip2p.qiwi_types.Errors">pyqiwip2p.qiwi_types.Errors module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#module-pyqiwip2p.qiwi_types.QiwiDatetime">pyqiwip2p.qiwi_types.QiwiDatetime module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#module-pyqiwip2p.qiwi_types.Responses">pyqiwip2p.qiwi_types.Responses module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyqiwip2p.qiwi_types.html#module-pyqiwip2p.qiwi_types">Module contents</a></li>
+  <div class="section" id="id1">
+<h1>Клиент<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<dl class="py class">
+<dt id="pyqiwip2p.QiwiP2P.QiwiP2P">
+<em class="property">class </em><code class="sig-prename descclassname">pyqiwip2p.QiwiP2P.</code><code class="sig-name descname">QiwiP2P</code><a class="reference internal" href="_modules/pyqiwip2p/QiwiP2P.html#QiwiP2P"><span class="viewcode-link">[исходный код]</span></a><a class="headerlink" href="#pyqiwip2p.QiwiP2P.QiwiP2P" title="Ссылка на это определение">¶</a></dt>
+<dd><blockquote>
+<div><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</div></blockquote>
+<p>Основной инструмент-клиент для взаимодействия с API QiwiP2P</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>auth_key</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – приватный ключ авторизации со страницы <a class="reference external" href="https://qiwi.com/p2p-admin/transfers/api">https://qiwi.com/p2p-admin/transfers/api</a>. Нужен для работы с вашим аккаунтом.</p></li>
+<li><p><strong>currency</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – валюта для счетов в формате <em>Alpha-3 ISO 4217</em>. Пока что API умеет работать только с <em>RUB</em></p></li>
 </ul>
-</li>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pyqiwip2p.QiwiP2P.QiwiP2P.bill">
+<code class="sig-name descname">bill</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bill_id</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">amount</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">expiration</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime" title="pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime">pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lifetime</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">customer</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Customer.QiwiCustomer" title="pyqiwip2p.qiwi_types.Customer.QiwiCustomer">pyqiwip2p.qiwi_types.Customer.QiwiCustomer</a><span class="p">, </span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">comment</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'via pyQiwiP2P made by WhiteApfel'</span></em>, <em class="sig-param"><span class="n">fields</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyqiwip2p/QiwiP2P.html#QiwiP2P.bill"><span class="viewcode-link">[исходный код]</span></a><a class="headerlink" href="#pyqiwip2p.QiwiP2P.QiwiP2P.bill" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Метод для выставления счета.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bill_id</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>) – идентификатор заказа/счета в вашей системе</p></li>
+<li><p><strong>amount</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>) – сумма заказа в рублях. Округляется до двух знаков после запятой.</p></li>
+<li><p><strong>expiration</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.</p></li>
+<li><p><strong>lifetime</strong> (<em>''int''</em><em>, </em><em>optional</em><em>, </em><em>default=30</em>) – время жизни счета в минутах. Если параметр <code class="docutils literal notranslate"><span class="pre">expiration</span></code> не указан, то будет автоматически сгенерируется дата для закрытия через <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> минут.</p></li>
+<li><p><strong>customer</strong> (<code class="docutils literal notranslate"><span class="pre">QiwiCustomer</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional) – объект QiwiCustomer или dict с полями phone, email и customer</p></li>
+<li><p><strong>comment</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – комментарий к платежу. До 255 символов</p></li>
+<li><p><strong>fields</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional) – словарь кастомных полей QIWI. Я ничего про них не понял, извините.</p></li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyqiwip2p.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyqiwip2p.html#module-pyqiwip2p.QiwiP2P">pyqiwip2p.QiwiP2P module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyqiwip2p.html#module-pyqiwip2p">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+</dd>
+<dt class="field-even">Результат</dt>
+<dd class="field-even"><p>Объект ответа при успешном выполнении</p>
+</dd>
+<dt class="field-odd">Тип результата</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Responses.Bill" title="pyqiwip2p.qiwi_types.Responses.Bill">Bill</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyqiwip2p.QiwiP2P.QiwiP2P.check">
+<code class="sig-name descname">check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bill_id</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyqiwip2p/QiwiP2P.html#QiwiP2P.check"><span class="viewcode-link">[исходный код]</span></a><a class="headerlink" href="#pyqiwip2p.QiwiP2P.QiwiP2P.check" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Проверяет статус выставленного счета.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры</dt>
+<dd class="field-odd"><p><strong>bill_id</strong> – уникальный идентификатор заказа в вашей системе</p>
+</dd>
+<dt class="field-even">Результат</dt>
+<dd class="field-even"><p>Bill</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyqiwip2p.QiwiP2P.QiwiP2P.reject">
+<code class="sig-name descname">reject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bill_id</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyqiwip2p/QiwiP2P.html#QiwiP2P.reject"><span class="viewcode-link">[исходный код]</span></a><a class="headerlink" href="#pyqiwip2p.QiwiP2P.QiwiP2P.reject" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Закрывает счет на оплату.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры</dt>
+<dd class="field-odd"><p><strong>bill_id</strong> – уникальный идентификатор заказа в вашей системе</p>
+</dd>
+<dt class="field-even">Результат</dt>
+<dd class="field-even"><p>Bill</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="id0">
+<code class="sig-prename descclassname">pyqiwip2p.QiwiP2P.QiwiP2P.</code><code class="sig-name descname">bill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Ссылка на это определение">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -81,10 +130,7 @@
         <div class="sphinxsidebarwrapper">
   <h4>Предыдущий раздел</h4>
   <p class="topless"><a href="index.html"
-                        title="предыдущая глава">Welcome to PyQiwiP2P’s documentation!</a></p>
-  <h4>Следующий раздел</h4>
-  <p class="topless"><a href="pyqiwip2p.html"
-                        title="следующая глава">pyqiwip2p package</a></p>
+                        title="предыдущая глава">Документация PyQiwiP2P приветствует тебя!</a></p>
   <div role="note" aria-label="source link">
     <h3>Эта страница</h3>
     <ul class="this-page-menu">
@@ -116,13 +162,10 @@
           <a href="py-modindex.html" title="Содержание модулей Python"
              >модули</a> |</li>
         <li class="right" >
-          <a href="pyqiwip2p.html" title="pyqiwip2p package"
-             >вперёд</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to PyQiwiP2P’s documentation!"
+          <a href="index.html" title="Документация PyQiwiP2P приветствует тебя!"
              >назад</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">документация PyQiwiP2P </a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyqiwip2p</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Клиент</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
