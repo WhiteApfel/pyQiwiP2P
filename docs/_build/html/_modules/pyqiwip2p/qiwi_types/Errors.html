@@ -25,9 +25,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="Алфавитный указатель"
              accesskey="I">указатель</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Содержание модулей Python"
-             >модули</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">документация PyQiwiP2P </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Код модуля</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyqiwip2p.qiwi_types.Errors</a></li> 
@@ -40,7 +37,13 @@
           <div class="body" role="main">
             
   <h1>Исходный код pyqiwip2p.qiwi_types.Errors</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="QiwiError"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Errors.QiwiError">[документация]</a><span></span><span class="k">class</span> <span class="nc">QiwiError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="QiwiError"><a class="viewcode-back" href="../../../Types.html#pyqiwip2p.qiwi_types.Errors.QiwiError">[документация]</a><span></span><span class="k">class</span> <span class="nc">QiwiError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Штучка для удобной работы с ошибками от Qiwi</span>
+
+<span class="sd">	:param response_json: json-словарь ответа на запрос</span>
+<span class="sd">	:type response_json: ``dict``</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">service_name</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;serviceName&quot;</span><span class="p">]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">error_code</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;errorCode&quot;</span><span class="p">]</span>
@@ -85,9 +88,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="Алфавитный указатель"
              >указатель</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Содержание модулей Python"
-             >модули</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">документация PyQiwiP2P </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Код модуля</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyqiwip2p.qiwi_types.Errors</a></li> 

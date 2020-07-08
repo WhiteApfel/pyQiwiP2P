@@ -25,9 +25,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="Алфавитный указатель"
              accesskey="I">указатель</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Содержание модулей Python"
-             >модули</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">документация PyQiwiP2P </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Код модуля</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyqiwip2p.QiwiP2P</a></li> 
@@ -49,7 +46,7 @@
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiDatetime</span>
 
 
-<div class="viewcode-block" id="QiwiP2P"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P">[документация]</a><span class="k">class</span> <span class="nc">QiwiP2P</span><span class="p">:</span>
+<div class="viewcode-block" id="QiwiP2P"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P">[документация]</a><span class="k">class</span> <span class="nc">QiwiP2P</span><span class="p">:</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Основной инструмент-клиент для взаимодействия с API QiwiP2P</span>
 
@@ -62,7 +59,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="n">currency</span>
 
-<div class="viewcode-block" id="QiwiP2P.bill"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.bill">[документация]</a>	<span class="k">def</span> <span class="nf">bill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<div class="viewcode-block" id="QiwiP2P.bill"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P.bill">[документация]</a>	<span class="k">def</span> <span class="nf">bill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
 				<span class="n">expiration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">QiwiDatetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				<span class="n">lifetime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
 				<span class="n">customer</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">QiwiCustomer</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;via pyQiwiP2P made by WhiteApfel&quot;</span><span class="p">,</span>
@@ -77,14 +74,14 @@
 <span class="sd">		:param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.</span>
 <span class="sd">		:type expiration: ``int``, ``datetime`` or ``str``, optional</span>
 <span class="sd">		:param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.</span>
-<span class="sd">		:type lifetime: &#39;&#39;int&#39;&#39;, optional, default=30</span>
+<span class="sd">		:type lifetime: ``int``, optional, default=30</span>
 <span class="sd">		:param customer: объект QiwiCustomer или dict с полями phone, email и customer</span>
 <span class="sd">		:type customer: ``QiwiCustomer`` or ``dict``, optional</span>
 <span class="sd">		:param comment: комментарий к платежу. До 255 символов</span>
 <span class="sd">		:type comment: ``str``, optional</span>
 <span class="sd">		:param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините.</span>
 <span class="sd">		:type fields: ``dict``, optional</span>
-<span class="sd">		:return: Объект ответа при успешном выполнении</span>
+<span class="sd">		:return: Объект счета при успешном выполнении</span>
 <span class="sd">		:rtype: Bill</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">expiration</span> <span class="o">=</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span> <span class="k">if</span> <span class="n">expiration</span> <span class="k">else</span> <span class="n">QiwiDatetime</span><span class="p">()</span><span class="o">.</span><span class="n">expiration</span><span class="p">(</span><span class="n">lifetime</span><span class="p">)</span>
@@ -110,12 +107,14 @@
 					<span class="n">json</span><span class="o">=</span><span class="n">qiwi_request_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">qiwi_request_headers</span><span class="p">))</span>
 		<span class="k">return</span> <span class="n">qiwi_response</span></div>
 
-<div class="viewcode-block" id="QiwiP2P.check"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.check">[документация]</a>	<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<div class="viewcode-block" id="QiwiP2P.check"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P.check">[документация]</a>	<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Проверяет статус выставленного счета.</span>
 
-<span class="sd">		:param bill_id: уникальный идентификатор заказа в вашей системе</span>
-<span class="sd">		:return: Bill</span>
+<span class="sd">		:param bill_id: идентификатор заказа/счета в вашей системе</span>
+<span class="sd">		:type bill_id: ``str`` or ``int``</span>
+<span class="sd">		:return: Объект счета при успешном выполнении</span>
+<span class="sd">		:rtype: Bill</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
 			<span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
@@ -125,12 +124,14 @@
 					<span class="n">headers</span><span class="o">=</span><span class="n">qiwi_request_headers</span><span class="p">))</span>
 		<span class="k">return</span> <span class="n">qiwi_response</span></div>
 
-<div class="viewcode-block" id="QiwiP2P.reject"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.reject">[документация]</a>	<span class="k">def</span> <span class="nf">reject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<div class="viewcode-block" id="QiwiP2P.reject"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P.reject">[документация]</a>	<span class="k">def</span> <span class="nf">reject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Закрывает счет на оплату.</span>
 
-<span class="sd">		:param bill_id: уникальный идентификатор заказа в вашей системе</span>
-<span class="sd">		:return: Bill</span>
+<span class="sd">		:param bill_id: идентификатор заказа/счета в вашей системе</span>
+<span class="sd">		:type bill_id: ``str`` or ``int``</span>
+<span class="sd">		:return: Объект счета при успешном выполнении</span>
+<span class="sd">		:rtype: Bill</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
 			<span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
@@ -167,9 +168,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="Алфавитный указатель"
              >указатель</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Содержание модулей Python"
-             >модули</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">документация PyQiwiP2P </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Код модуля</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyqiwip2p.QiwiP2P</a></li> 

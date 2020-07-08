@@ -18,13 +18,14 @@
 Установка
 ---------
 
-.. code-block::
+::
 
-   git clone https://github.com/WhiteApfel/pyQiwiP2P
-   cd pyQiwiP2P
-   python setup.py install
+ git clone https://github.com/WhiteApfel/pyQiwiP2P
+ cd pyQiwiP2P
+ python setup.py install
 
 .. toctree::
    :maxdepth: 4
    
-   modules
+   Client
+   Types

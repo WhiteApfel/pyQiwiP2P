@@ -1,4 +1,10 @@
 class QiwiError(Exception):
+	"""
+	Штучка для удобной работы с ошибками от Qiwi
+
+	:param response_json: json-словарь ответа на запрос
+	:type response_json: ``dict``
+	"""
 	def __init__(self, response_json: dict):
 		self.service_name = response_json["serviceName"]
 		self.error_code = response_json["errorCode"]

@@ -5,6 +5,12 @@ from datetime import datetime, timedelta, timezone
 
 
 class QiwiDatetime:
+	"""
+	Тип для удобной работы с форматами времени, ибо их слишком много
+
+	:param moment: нужный момент времени в одном из удобных форматов для универсализации
+	:type moment: ``str``, ``int``, ``datetime``, optional, default=``now``)
+	"""
 	def __init__(self, moment: typing.Union[str, int, datetime] = None):
 		self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+-][0-1][0-9]:[0-5][0-9]"
 		self.datetime: datetime = self.now_datetime()
@@ -63,6 +69,14 @@ class QiwiDatetime:
 		self.timestamp = self.datetime_timastamp(dt)
 
 	def expiration(self, lifetime: int = 30):
+		"""
+		Рассчитывает время, когда надо закрыть счет
+
+		:param lifetime: через сколько минут закрыть счет
+		:type lifetime: ``int``, optional, default=30
+		:return: Время закрытия заказа
+		:rtype: ``str`` в формате "*YYYY-MM-DDThh:mm:ss+hh:mm*"
+		"""
 		self.set_from_datetime(self.now_datetime()+timedelta(minutes=lifetime))
 		return self.qiwi
 

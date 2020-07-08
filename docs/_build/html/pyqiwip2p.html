@@ -86,14 +86,14 @@
 <li><p><strong>bill_id</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>) – идентификатор заказа/счета в вашей системе</p></li>
 <li><p><strong>amount</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>) – сумма заказа в рублях. Округляется до двух знаков после запятой.</p></li>
 <li><p><strong>expiration</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.</p></li>
-<li><p><strong>lifetime</strong> (<em>''int''</em><em>, </em><em>optional</em><em>, </em><em>default=30</em>) – время жизни счета в минутах. Если параметр <code class="docutils literal notranslate"><span class="pre">expiration</span></code> не указан, то будет автоматически сгенерируется дата для закрытия через <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> минут.</p></li>
+<li><p><strong>lifetime</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default=30) – время жизни счета в минутах. Если параметр <code class="docutils literal notranslate"><span class="pre">expiration</span></code> не указан, то будет автоматически сгенерируется дата для закрытия через <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> минут.</p></li>
 <li><p><strong>customer</strong> (<code class="docutils literal notranslate"><span class="pre">QiwiCustomer</span></code> or <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional) – объект QiwiCustomer или dict с полями phone, email и customer</p></li>
 <li><p><strong>comment</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, optional) – комментарий к платежу. До 255 символов</p></li>
 <li><p><strong>fields</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional) – словарь кастомных полей QIWI. Я ничего про них не понял, извините.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Результат</dt>
-<dd class="field-even"><p>Объект ответа при успешном выполнении</p>
+<dd class="field-even"><p>Объект счета при успешном выполнении</p>
 </dd>
 <dt class="field-odd">Тип результата</dt>
 <dd class="field-odd"><p><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Responses.Bill" title="pyqiwip2p.qiwi_types.Responses.Bill">Bill</a></p>
@@ -107,10 +107,13 @@
 <dd><p>Проверяет статус выставленного счета.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Параметры</dt>
-<dd class="field-odd"><p><strong>bill_id</strong> – уникальный идентификатор заказа в вашей системе</p>
+<dd class="field-odd"><p><strong>bill_id</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>) – идентификатор заказа/счета в вашей системе</p>
 </dd>
 <dt class="field-even">Результат</dt>
-<dd class="field-even"><p>Bill</p>
+<dd class="field-even"><p>Объект счета при успешном выполнении</p>
+</dd>
+<dt class="field-odd">Тип результата</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Responses.Bill" title="pyqiwip2p.qiwi_types.Responses.Bill">Bill</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -121,10 +124,13 @@
 <dd><p>Закрывает счет на оплату.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Параметры</dt>
-<dd class="field-odd"><p><strong>bill_id</strong> – уникальный идентификатор заказа в вашей системе</p>
+<dd class="field-odd"><p><strong>bill_id</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span></code>) – идентификатор заказа/счета в вашей системе</p>
 </dd>
 <dt class="field-even">Результат</dt>
-<dd class="field-even"><p>Bill</p>
+<dd class="field-even"><p>Объект счета при успешном выполнении</p>
+</dd>
+<dt class="field-odd">Тип результата</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.Responses.Bill" title="pyqiwip2p.qiwi_types.Responses.Bill">Bill</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -35,14 +35,14 @@ class QiwiP2P:
 		:param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.
 		:type expiration: ``int``, ``datetime`` or ``str``, optional
 		:param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.
-		:type lifetime: ''int'', optional, default=30
+		:type lifetime: ``int``, optional, default=30
 		:param customer: объект QiwiCustomer или dict с полями phone, email и customer
 		:type customer: ``QiwiCustomer`` or ``dict``, optional
 		:param comment: комментарий к платежу. До 255 символов
 		:type comment: ``str``, optional
 		:param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините.
 		:type fields: ``dict``, optional
-		:return: Объект ответа при успешном выполнении
+		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
 		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime().expiration(lifetime)
@@ -72,8 +72,10 @@ class QiwiP2P:
 		"""
 		Проверяет статус выставленного счета.
 
-		:param bill_id: уникальный идентификатор заказа в вашей системе
-		:return: Bill
+		:param bill_id: идентификатор заказа/счета в вашей системе
+		:type bill_id: ``str`` or ``int``
+		:return: Объект счета при успешном выполнении
+		:rtype: Bill
 		"""
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
@@ -87,8 +89,10 @@ class QiwiP2P:
 		"""
 		Закрывает счет на оплату.
 
-		:param bill_id: уникальный идентификатор заказа в вашей системе
-		:return: Bill
+		:param bill_id: идентификатор заказа/счета в вашей системе
+		:type bill_id: ``str`` or ``int``
+		:return: Объект счета при успешном выполнении
+		:rtype: Bill
 		"""
 		qiwi_request_headers = {
 			"Content-Type": "application/json",

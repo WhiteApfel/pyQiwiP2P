@@ -4,22 +4,28 @@ from email_validator import validate_email, EmailNotValidError
 
 
 class QiwiCustomer:
+	"""
+	Объект пользователя/покупателя. Неизвестно, зачем эта информация нужна QIWI, но раз можно, то почему бы и нет. Для удобства работы с QIWI API.
+
+	:param phone: номер телефона практически в любом формате
+	:type phone: ``str`` or ``int``, optional
+	:param email: электронная почта
+	:type email: ``str``, optional
+	:param account: идентификатор аккаунта
+	:type account: ``str``, optional
+	:param json_data: словарь с полями phone, email и account. При наличии этого параметра, другие игнорируются.
+	:type json_data: ``dict``, optional
+	:param ignore_valid: игнорировать невалидные значения номера телефона и почты
+	:type ignore_valid: `bool``, optional
+	:param ignore_args: игнорировать отсутствующее значение и поставить None вместо него.
+	:type ignore_args: ``bool`, optional
+	"""
 	def __init__(self,  phone: typing.Union[str, int] = None,
 						email: str = None,
 						account: typing.Union[str, int] = None,
 						json_data: dict = None,
 						ignore_valid: bool = False,
 						ignore_args: bool = False):
-		"""
-		Объект пользователя/покупателя. Неизвестно, зачем эта информация нужна QIWI, но раз можно, то почему бы и нет.
-		Для удобства работы с QIWI API.
-		:param phone: номер телефона практически в любом формате
-		:param email: электронная почта
-		:param account: идентификатор аккаунта
-		:param json_data: dict с полями phone, email и account. При наличии этого параметра, другие игнорируются.
-		:param ignore_valid: игнорировать невалидные значения номера телефона и почты
-		:param ignore_args: игнорировать отсутствующее значение и поставить None вместо него.
-		"""
 		if json_data:
 			self.phone = json_data["phone"]
 			self.email = json_data["email"]
