@@ -1,2 +1,2 @@
 # pyQiwiP2P
-Qiwi P2P library
+Типа (документация)[https://pyqiwip2p.readthedocs.io/ru/latest/]. Пока в процессе разработки
