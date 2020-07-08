@@ -10,6 +10,16 @@ class QiwiCustomer:
 						json_data: dict = None,
 						ignore_valid: bool = False,
 						ignore_args: bool = False):
+		"""
+		Объект пользователя/покупателя. Неизвестно, зачем эта информация нужна QIWI, но раз можно, то почему бы и нет.
+		Для удобства работы с QIWI API.
+		:param phone: номер телефона практически в любом формате
+		:param email: электронная почта
+		:param account: идентификатор аккаунта
+		:param json_data: dict с полями phone, email и account. При наличии этого параметра, другие игнорируются.
+		:param ignore_valid: игнорировать невалидные значения номера телефона и почты
+		:param ignore_args: игнорировать отсутствующее значение и поставить None вместо него.
+		"""
 		if json_data:
 			self.phone = json_data["phone"]
 			self.email = json_data["email"]
@@ -18,11 +28,11 @@ class QiwiCustomer:
 			if all([phone, email, account]) or ignore_args:
 				if ignore_valid:
 					self.phone = str(phone)
-					self.email = email
+					self.email = str(email)
 					self.account = str(account)
 				else:
 					parse_phone = phonenumbers.parse("+"+str(phone))
-					if phonenumbers.is_alpha_number(phonenumbers.parse(phone)):
+					if phonenumbers.is_valid_number(parse_phone):
 						self.phone = f"+{parse_phone.country_code}{parse_phone.national_number}"
 					else:
 						ValueError("Customer phone number is not valid")
@@ -30,9 +40,7 @@ class QiwiCustomer:
 					self.account = str(account)
 			else:
 				raise ValueError("One of the values is missing")
-
-	def __repr__(self):
-		return {
+		self.dict = {
 			"phone": self.phone,
 			"email": self.email,
 			"account": self.account

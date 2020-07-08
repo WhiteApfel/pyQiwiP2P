@@ -12,17 +12,19 @@ class QiwiP2P:
 
 	def bill(self, bill_id: typing.Union[str, int], amount: typing.Union[int, float],
 				expiration: typing.Union[str, int, QiwiDatetime] = None,
-				customer: QiwiCustomer = None, comment: str = "via pyQiwiP2P made by WhiteApfel"):
-		'''
-		Функция для выставления счета. Возвращает объект Bill, который содержит ссылку на форму
+				customer: typing.Union[QiwiCustomer, dict] = None, comment: str = "via pyQiwiP2P made by WhiteApfel",
+				fields: dict = None):
+		"""
+		Функция для выставления счета. Возвращает объект Bill, который содержит ссылку на форму.
 		:param bill_id: обязательный идентификатор заказа/счета в вашей системе
 		:param amount: обязательная сумма заказа в рублях. Должно быть числом. Округляется до двух знаков после запятой.
 		:param expiration: время смерти выставленного счета. Принимает: Timestamp, Datetime или
 		строку формата YYYY-MM-DDThh:mm:ss+hh:mm. Для удобства работы создан qiwi_types.QiwiDatetime
-		:param customer: объект QiwiCustomer для информации о покупателе
+		:param customer: объект QiwiCustomer или dict с полями phone, email и customer
 		:param comment: комментарий к платежу. До 255 символов
+		:param fields: dict-словарь кастомных полей QIWI. Я ничего про них не понял, извините.
 		:return: Bill
-		'''
+		"""
 		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime().expiration()
 		amount = str(round(float(amount), 2)) if len(str(float(amount)).split(".")[1]) > 1 else str(round(float(amount), 2))+"0"
 		qiwi_request_headers = {
@@ -37,8 +39,8 @@ class QiwiP2P:
 			},
 			"comment": comment,
 			"expirationDateTime": expiration,
-			"customer": customer if customer else {},
-			"customFields": {}
+			"customer": customer.dict if type(customer) is QiwiCustomer else QiwiCustomer(json_data=customer).dict if customer else {},
+			"customFields": fields if fields else {}
 		}
 		print(qiwi_request_headers)
 		print(qiwi_request_data)
