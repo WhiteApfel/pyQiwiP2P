@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pyqiwip2p.qiwi_types.QiwiDatetime &#8212; документация PyQiwiP2P </title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код pyqiwip2p.qiwi_types.QiwiDatetime</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+
+<div class="viewcode-block" id="QiwiDatetime"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime">[документация]</a><span class="k">class</span> <span class="nc">QiwiDatetime</span><span class="p">:</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_exp_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[0-9]</span><span class="si">{4}</span><span class="s2">-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+-][0-1][0-9]:[0-5][0-9]&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now_datetime</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">qiwi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">moment</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exp_regex</span><span class="p">,</span> <span class="n">moment</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">set_from_qiwi</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The string does not match the format &#39;ГГГГ-ММ-ДДTчч:мм:сс+\-чч:мм&#39;&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">moment</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">():</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Time has passed&quot;</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">set_from_timestamp</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span> <span class="ow">is</span> <span class="n">datetime</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">set_from_datetime</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">set_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now_datetime</span><span class="p">())</span>
+
+<div class="viewcode-block" id="QiwiDatetime.now_datetime"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.now_datetime">[документация]</a>	<span class="k">def</span> <span class="nf">now_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">3</span><span class="p">)))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.timestamp_datetime"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.timestamp_datetime">[документация]</a>	<span class="k">def</span> <span class="nf">timestamp_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.timestamp_qiwi"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.timestamp_qiwi">[документация]</a>	<span class="k">def</span> <span class="nf">timestamp_qiwi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_datetime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">3</span><span class="p">)))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.datetime_timastamp"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.datetime_timastamp">[документация]</a>	<span class="k">def</span> <span class="nf">datetime_timastamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.datetime_qiwi"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.datetime_qiwi">[документация]</a>	<span class="k">def</span> <span class="nf">datetime_qiwi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">3</span><span class="p">)))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.qiwi_timestamp"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.qiwi_timestamp">[документация]</a>	<span class="k">def</span> <span class="nf">qiwi_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qiwi_datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.qiwi_datetime"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.qiwi_datetime">[документация]</a>	<span class="k">def</span> <span class="nf">qiwi_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S%z&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.set_from_timestamp"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.set_from_timestamp">[документация]</a>	<span class="k">def</span> <span class="nf">set_from_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">timestamp</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">qiwi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_qiwi</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">timestamp</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.set_from_qiwi"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.set_from_qiwi">[документация]</a>	<span class="k">def</span> <span class="nf">set_from_qiwi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qiwi_datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">qiwi</span> <span class="o">=</span> <span class="n">dt</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qiwi_timestamp</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.set_from_datetime"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.set_from_datetime">[документация]</a>	<span class="k">def</span> <span class="nf">set_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span> <span class="n">dt</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">qiwi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_qiwi</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_timastamp</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QiwiDatetime.expiration"><a class="viewcode-back" href="../../../pyqiwip2p.qiwi_types.html#pyqiwip2p.qiwi_types.QiwiDatetime.QiwiDatetime.expiration">[документация]</a>	<span class="k">def</span> <span class="nf">expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">set_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now_datetime</span><span class="p">()</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">lifetime</span><span class="p">))</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">qiwi</span></div></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PyQiwiP2P</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, WhiteApfel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

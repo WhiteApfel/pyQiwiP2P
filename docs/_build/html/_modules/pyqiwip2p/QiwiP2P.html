@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pyqiwip2p.QiwiP2P &#8212; документация PyQiwiP2P </title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код pyqiwip2p.QiwiP2P</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiDatetime</span>
+<span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiCustomer</span>
+<span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">Bill</span>
+
+
+<div class="viewcode-block" id="QiwiP2P"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P">[документация]</a><span class="k">class</span> <span class="nc">QiwiP2P</span><span class="p">:</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">currency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RUB&quot;</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="n">currency</span>
+
+<div class="viewcode-block" id="QiwiP2P.bill"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.bill">[документация]</a>	<span class="k">def</span> <span class="nf">bill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+				<span class="n">expiration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">QiwiDatetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+				<span class="n">customer</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">QiwiCustomer</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;via pyQiwiP2P made by WhiteApfel&quot;</span><span class="p">,</span>
+				<span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Функция для выставления счета. Возвращает объект Bill, который содержит ссылку на форму.</span>
+<span class="sd">		:param bill_id: обязательный идентификатор заказа/счета в вашей системе</span>
+<span class="sd">		:param amount: обязательная сумма заказа в рублях. Должно быть числом. Округляется до двух знаков после запятой.</span>
+<span class="sd">		:param expiration: время смерти выставленного счета. Принимает: Timestamp, Datetime или</span>
+<span class="sd">		строку формата YYYY-MM-DDThh:mm:ss+hh:mm. Для удобства работы создан qiwi_types.QiwiDatetime</span>
+<span class="sd">		:param customer: объект QiwiCustomer или dict с полями phone, email и customer</span>
+<span class="sd">		:param comment: комментарий к платежу. До 255 символов</span>
+<span class="sd">		:param fields: dict-словарь кастомных полей QIWI. Я ничего про них не понял, извините.</span>
+<span class="sd">		:return: Bill</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">expiration</span> <span class="o">=</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span> <span class="k">if</span> <span class="n">expiration</span> <span class="k">else</span> <span class="n">QiwiDatetime</span><span class="p">()</span><span class="o">.</span><span class="n">expiration</span><span class="p">()</span>
+		<span class="n">amount</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;0&quot;</span>
+		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+			<span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+			<span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="p">}</span>
+		<span class="n">qiwi_request_data</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="p">{</span>
+				<span class="s2">&quot;currency&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency</span><span class="p">,</span>
+				<span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">amount</span>
+			<span class="p">},</span>
+			<span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">comment</span><span class="p">,</span>
+			<span class="s2">&quot;expirationDateTime&quot;</span><span class="p">:</span> <span class="n">expiration</span><span class="p">,</span>
+			<span class="s2">&quot;customer&quot;</span><span class="p">:</span> <span class="n">customer</span><span class="o">.</span><span class="n">dict</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span> <span class="ow">is</span> <span class="n">QiwiCustomer</span> <span class="k">else</span> <span class="n">QiwiCustomer</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">customer</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span> <span class="k">if</span> <span class="n">customer</span> <span class="k">else</span> <span class="p">{},</span>
+			<span class="s2">&quot;customFields&quot;</span><span class="p">:</span> <span class="n">fields</span> <span class="k">if</span> <span class="n">fields</span> <span class="k">else</span> <span class="p">{}</span>
+		<span class="p">}</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">qiwi_request_headers</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">qiwi_request_data</span><span class="p">)</span>
+		<span class="n">qiwi_response</span> <span class="o">=</span> <span class="n">Bill</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.qiwi.com/partner/bill/v1/bills/</span><span class="si">{</span><span class="n">bill_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+					<span class="n">json</span><span class="o">=</span><span class="n">qiwi_request_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">qiwi_request_headers</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">qiwi_response</span></div>
+
+<div class="viewcode-block" id="QiwiP2P.check"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.check">[документация]</a>	<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Проверяет статус выставленного счета.</span>
+<span class="sd">		:param bill_id: уникальный идентификатор заказа в вашей системе</span>
+<span class="sd">		:return: Bill</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+			<span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="p">}</span>
+		<span class="n">qiwi_response</span> <span class="o">=</span> <span class="n">Bill</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.qiwi.com/partner/bill/v1/bills/</span><span class="si">{</span><span class="n">bill_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+					<span class="n">headers</span><span class="o">=</span><span class="n">qiwi_request_headers</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">qiwi_response</span></div>
+
+<div class="viewcode-block" id="QiwiP2P.reject"><a class="viewcode-back" href="../../pyqiwip2p.html#pyqiwip2p.QiwiP2P.QiwiP2P.reject">[документация]</a>	<span class="k">def</span> <span class="nf">reject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Закрывает счет на оплату.</span>
+<span class="sd">		:param bill_id: уникальный идентификатор заказа в вашей системе</span>
+<span class="sd">		:return: Bill</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+			<span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="p">}</span>
+		<span class="n">qiwi_response</span> <span class="o">=</span> <span class="n">Bill</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.qiwi.com/partner/bill/v1/bills/</span><span class="si">{</span><span class="n">bill_id</span><span class="si">}</span><span class="s2">/reject&quot;</span><span class="p">,</span>
+					<span class="n">headers</span><span class="o">=</span><span class="n">qiwi_request_headers</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">qiwi_response</span></div></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">PyQiwiP2P</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, WhiteApfel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
