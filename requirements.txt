@@ -1,3 +1,4 @@
 setuptools
 requests
 phonenumbers
+email_validator
