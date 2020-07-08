@@ -8,7 +8,6 @@ Welcome to PyQiwiP2P's documentation!
 
 .. toctree::
    :maxdepth: 4
-   :caption: Contents:
    modules
 
 
