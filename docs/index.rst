@@ -26,6 +26,7 @@
 
 .. toctree::
    :maxdepth: 4
-   
+
+   Use
    Client
    Types
