@@ -8,7 +8,8 @@
 
  QIWI_PRIV_KEY = "abCdef...xYz"
 
- p2p = QiwiP2P(QIWI_PRIV_KEY)
+
+ p2p = QiwiP2P(auth_key=QIWI_PRIV_KEY)
 
  # Выставим счет на сумму 228 рублей который будет работать 45 минут
  new_bill = p2p.bill(bill_id=212332030, amount=228, lifetime=45)
@@ -23,3 +24,18 @@
 
  # Клиент отменил заказ? Тогда и счет надо закрыть
  p2p.reject(bill_id=new_bill.bill_id)
+
+
+ # Если планируете выставлять счета с одинаковой суммой,
+ # можно воспользоваться параметром default_amount
+ p2p = QiwiP2P(auth_key=QIWI_PRIV_KEY, default_amount=148)
+
+ # Теперь, если не указывать в методе p2p.bill() значение суммы заказа,
+ # будет применяться указанная базовая сумма
+ new_bill = p2p.bill(bill_id=6627358)
+
+ # А ещё можно не указывать bill_id, тогда значение сгенерируется автоматически.
+ # Его можно будет посмотреть в объекте ответа Bill
+ # В комбинации со стандартным значением суммы будет вот так
+ new_bill = p2p.bill()
+ print(new_bill.bill_id, new_bill.pay_url)

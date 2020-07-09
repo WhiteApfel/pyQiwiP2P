@@ -38,7 +38,8 @@
             
   <h1>Исходный код pyqiwip2p.QiwiP2P</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">typing</span>
-
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">Bill</span>
@@ -51,18 +52,21 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Основной инструмент-клиент для взаимодействия с API QiwiP2P</span>
 
-<span class="sd">	**Аргументы и аттрибуты*</span>
+<span class="sd">	**Аргументы и аттрибуты**</span>
 
 <span class="sd">	:param auth_key: приватный ключ авторизации со страницы https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.</span>
 <span class="sd">	:type auth_key: ``str``</span>
+<span class="sd">	:param default_amount: значение суммы счета по умолчанию для новых счетов.</span>
+<span class="sd">	:type default_amount: ``int`` or ``float``, optional</span>
 <span class="sd">	:param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB*</span>
 <span class="sd">	:type currency: ``str``, optional</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">currency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RUB&quot;</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_amount</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">currency</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RUB&quot;</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="n">currency</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">default_amount</span> <span class="o">=</span> <span class="n">default_amount</span>
 
-<div class="viewcode-block" id="QiwiP2P.bill"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P.bill">[документация]</a>	<span class="k">def</span> <span class="nf">bill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">amount</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<div class="viewcode-block" id="QiwiP2P.bill"><a class="viewcode-back" href="../../Client.html#pyqiwip2p.QiwiP2P.QiwiP2P.bill">[документация]</a>	<span class="k">def</span> <span class="nf">bill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bill_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">amount</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				<span class="n">expiration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">QiwiDatetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 				<span class="n">lifetime</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
 				<span class="n">customer</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">QiwiCustomer</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;via pyQiwiP2P made by WhiteApfel&quot;</span><span class="p">,</span>
@@ -70,10 +74,10 @@
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Метод для выставления счета.</span>
 
-<span class="sd">		:param bill_id: идентификатор заказа/счета в вашей системе</span>
-<span class="sd">		:type bill_id: ``str`` or ``int``</span>
-<span class="sd">		:param amount: сумма заказа в рублях. Округляется до двух знаков после запятой.</span>
-<span class="sd">		:type amount: ``int`` or ``float``</span>
+<span class="sd">		:param bill_id: идентификатор заказа/счета в вашей системе. Если параметр не укзаан, генерируется строка, основанная на времени.</span>
+<span class="sd">		:type bill_id: ``str`` or ``int``, optional</span>
+<span class="sd">		:param amount: сумма заказа в рублях. Округляется до двух знаков после запятой. Если не указано, используется значение по умолчанию</span>
+<span class="sd">		:type amount: ``int`` or ``float``, optional</span>
 <span class="sd">		:param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.</span>
 <span class="sd">		:type expiration: ``int``, ``datetime`` or ``str``, optional</span>
 <span class="sd">		:param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.</span>
@@ -88,6 +92,8 @@
 <span class="sd">		:return: Объект счета при успешном выполнении</span>
 <span class="sd">		:rtype: Bill</span>
 <span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">bill_id</span> <span class="o">=</span> <span class="n">bill_id</span> <span class="k">if</span> <span class="n">bill_id</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;WhiteApfel-PyQiwiP2P-</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">))[</span><span class="mi">4</span><span class="p">:]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="n">amount</span> <span class="o">=</span> <span class="n">amount</span> <span class="k">if</span> <span class="n">amount</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_amount</span>
 		<span class="n">expiration</span> <span class="o">=</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span> <span class="k">if</span> <span class="n">expiration</span> <span class="k">else</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">lifetime</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span>
 		<span class="n">amount</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;0&quot;</span>
 		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
