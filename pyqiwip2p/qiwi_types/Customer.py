@@ -7,6 +7,8 @@ class QiwiCustomer:
 	"""
 	Объект пользователя/покупателя. Неизвестно, зачем эта информация нужна QIWI, но раз можно, то почему бы и нет. Для удобства работы с QIWI API.
 
+	**Аргументы**
+
 	:param phone: номер телефона практически в любом формате
 	:type phone: ``str`` or ``int``, optional
 	:param email: электронная почта
@@ -16,9 +18,21 @@ class QiwiCustomer:
 	:param json_data: словарь с полями phone, email и account. При наличии этого параметра, другие игнорируются.
 	:type json_data: ``dict``, optional
 	:param ignore_valid: игнорировать невалидные значения номера телефона и почты
-	:type ignore_valid: `bool``, optional
+	:type ignore_valid: ``bool``, optional
 	:param ignore_args: игнорировать отсутствующее значение и поставить None вместо него.
-	:type ignore_args: ``bool`, optional
+	:type ignore_args: ``bool``, optional
+	:rtype: dict
+
+	**Аттрибуты**
+
+	:param phone: номер телефона в формате
+	:type phone: ``str`` в формате *+79994442211*
+	:param email: адрес электронной почты
+	:type email: ``str``
+	:param account: идентификатор клиента в вашей системе
+	:type account: ''str''
+	:param dict: json-словарь для использования в API
+	:type dict: ``dict``
 	"""
 	def __init__(self,  phone: typing.Union[str, int] = None,
 						email: str = None,

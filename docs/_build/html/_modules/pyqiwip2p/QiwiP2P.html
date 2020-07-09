@@ -42,6 +42,7 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">Bill</span>
+<span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiError</span>
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiCustomer</span>
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiDatetime</span>
 
@@ -50,8 +51,10 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Основной инструмент-клиент для взаимодействия с API QiwiP2P</span>
 
+<span class="sd">	**Аргументы и аттрибуты*</span>
+
 <span class="sd">	:param auth_key: приватный ключ авторизации со страницы https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.</span>
-<span class="sd">	:type auth_key: ``str``, optional</span>
+<span class="sd">	:type auth_key: ``str``</span>
 <span class="sd">	:param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB*</span>
 <span class="sd">	:type currency: ``str``, optional</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -75,16 +78,17 @@
 <span class="sd">		:type expiration: ``int``, ``datetime`` or ``str``, optional</span>
 <span class="sd">		:param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.</span>
 <span class="sd">		:type lifetime: ``int``, optional, default=30</span>
-<span class="sd">		:param customer: объект QiwiCustomer или dict с полями phone, email и customer</span>
+<span class="sd">		:param customer: объект QiwiCustomer или ``dict`` с полями phone, email и customer</span>
 <span class="sd">		:type customer: ``QiwiCustomer`` or ``dict``, optional</span>
 <span class="sd">		:param comment: комментарий к платежу. До 255 символов</span>
 <span class="sd">		:type comment: ``str``, optional</span>
 <span class="sd">		:param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините.</span>
 <span class="sd">		:type fields: ``dict``, optional</span>
+<span class="sd">		:raise QiwiError: объект ответа Qiwi, если запрос не увенчался успехом</span>
 <span class="sd">		:return: Объект счета при успешном выполнении</span>
 <span class="sd">		:rtype: Bill</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">expiration</span> <span class="o">=</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span> <span class="k">if</span> <span class="n">expiration</span> <span class="k">else</span> <span class="n">QiwiDatetime</span><span class="p">()</span><span class="o">.</span><span class="n">expiration</span><span class="p">(</span><span class="n">lifetime</span><span class="p">)</span>
+		<span class="n">expiration</span> <span class="o">=</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span> <span class="k">if</span> <span class="n">expiration</span> <span class="k">else</span> <span class="n">QiwiDatetime</span><span class="p">(</span><span class="n">lifetime</span><span class="p">)</span><span class="o">.</span><span class="n">qiwi</span>
 		<span class="n">amount</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;0&quot;</span>
 		<span class="n">qiwi_request_headers</span> <span class="o">=</span> <span class="p">{</span>
 			<span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>

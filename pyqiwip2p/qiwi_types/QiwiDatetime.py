@@ -6,31 +6,45 @@ from datetime import datetime, timedelta, timezone
 
 class QiwiDatetime:
 	"""
-	Тип для удобной работы с форматами времени, ибо их слишком много
+	Тип для удобной работы с форматами времени.
 
 	:param moment: нужный момент времени в одном из удобных форматов для универсализации
-	:type moment: ``str``, ``int``, ``datetime``, optional, default=``now``)
+	:type moment: ``str``, ``int``, ``datetime``, optional, default=``now``
+	:param lifetime: время жизни счета. Генерирует момент времени с разницей в ``lifetime`` минут. Если указано, параметр ``moment`` игнорируется.
+	:type lifetime: ``int``
+
+	Класс содержит аттрибуты
+
+	:param datetime: момент времени
+	:type datetime: ``datetime.datetime``
+	:param qiwi: момент времени
+	:type qiwi: ``str`` в формате "*YYYY-MM-DDThh:mm:ss+hh:mm*"
+	:param timestamp: момент времени
+	:type timestamp: ``int`` в формате unix-времени
 	"""
-	def __init__(self, moment: typing.Union[str, int, datetime] = None):
-		self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+-][0-1][0-9]:[0-5][0-9]"
-		self.datetime: datetime = self.now_datetime()
-		self.qiwi = self.datetime.isoformat()
-		self.timestamp = self.datetime.timestamp()
-		if moment:
-			if type(moment) is str:
-				if re.match(self._exp_regex, moment):
-					self.set_from_qiwi(moment)
-				else:
-					raise TypeError("The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс+\-чч:мм'")
-			if type(moment) is int or type(moment) is float:
-				if moment < time.time():
-					raise ValueError("Time has passed")
-				else:
-					self.set_from_timestamp(moment)
-			if type(moment) is datetime:
-				self.set_from_datetime(moment)
+	def __init__(self, moment: typing.Union[str, int, datetime] = None, lifetime: int = None):
+		if lifetime:
+			self.expiration(lifetime)
 		else:
-			self.set_from_datetime(self.now_datetime())
+			self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+-][0-1][0-9]:[0-5][0-9]"
+			self.datetime: datetime = self.now_datetime()
+			self.qiwi = self.datetime.isoformat()
+			self.timestamp = self.datetime.timestamp()
+			if moment:
+				if type(moment) is str:
+					if re.match(self._exp_regex, moment):
+						self.set_from_qiwi(moment)
+					else:
+						raise TypeError("The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс+\-чч:мм'")
+				if type(moment) is int or type(moment) is float:
+					if moment < time.time():
+						raise ValueError("Time has passed")
+					else:
+						self.set_from_timestamp(moment)
+				if type(moment) is datetime:
+					self.set_from_datetime(moment)
+			else:
+				self.set_from_datetime(self.now_datetime())
 
 	def now_datetime(self):
 		return datetime.now(timezone(timedelta(hours=3))).replace(microsecond=0)
@@ -78,6 +92,5 @@ class QiwiDatetime:
 		:rtype: ``str`` в формате "*YYYY-MM-DDThh:mm:ss+hh:mm*"
 		"""
 		self.set_from_datetime(self.now_datetime()+timedelta(minutes=lifetime))
-		return self.qiwi
 
 

@@ -40,9 +40,47 @@
 <span></span><span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types.Errors</span> <span class="kn">import</span> <span class="n">QiwiError</span>
 <span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
 <span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiCustomer</span>
+<span class="kn">from</span> <span class="nn">pyqiwip2p.qiwi_types</span> <span class="kn">import</span> <span class="n">QiwiDatetime</span>
 
 
 <div class="viewcode-block" id="Bill"><a class="viewcode-back" href="../../../Types.html#pyqiwip2p.qiwi_types.Responses.Bill">[документация]</a><span class="k">class</span> <span class="nc">Bill</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Объект для удобной работы со счетом</span>
+
+<span class="sd">	**Аргументы**</span>
+
+<span class="sd">	:param response: ответ от серверов киви</span>
+<span class="sd">	:type response: Response</span>
+
+<span class="sd">	**Аттрибуты**</span>
+
+<span class="sd">	:param site_id: идентификатор вашего сайта в системе Qiwi</span>
+<span class="sd">	:type site_id: ``str``</span>
+<span class="sd">	:param bill_id: идентификатор счета</span>
+<span class="sd">	:type bill_id: ``str``</span>
+<span class="sd">	:param amount: сумма счета</span>
+<span class="sd">	:type amount: ``float``</span>
+<span class="sd">	:param currency: валюта счета</span>
+<span class="sd">	:type currency: ``str``</span>
+<span class="sd">	:param status: статус счета</span>
+<span class="sd">	:type status: ``str``</span>
+<span class="sd">	:param status_changed: время последнего изменения счата</span>
+<span class="sd">	:type status_changed: QiwiDatetime</span>
+<span class="sd">	:param creation: время создания счета</span>
+<span class="sd">	:type creation: QiwiDatetime</span>
+<span class="sd">	:param expiration: время закрытия счета</span>
+<span class="sd">	:type expiration: QiwiDatetime</span>
+<span class="sd">	:param pay_url: URL-адрес для оплаты</span>
+<span class="sd">	:type pay_url: ``str``</span>
+<span class="sd">	:param comment: комментарий</span>
+<span class="sd">	:type comment: ``str``, optional</span>
+<span class="sd">	:param customer: информация о клиенте</span>
+<span class="sd">	:type customer: QiwiCustomer</span>
+<span class="sd">	:param fields: кастомные поля Qiwi</span>
+<span class="sd">	:type fields: ``dict``</span>
+<span class="sd">	:param json: исходный словарь Qiwi на случай, если они что-то обновят или у меня что-то не работает</span>
+<span class="sd">	:type json: ``dict``</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">r_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 		<span class="k">if</span> <span class="s2">&quot;errorCode&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">:</span>
@@ -59,7 +97,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">pay_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">[</span><span class="s2">&quot;payUrl&quot;</span><span class="p">]</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;comment&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span> <span class="k">else</span> <span class="kc">None</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">customer</span><span class="p">:</span> <span class="n">QiwiCustomer</span> <span class="o">=</span> <span class="n">QiwiCustomer</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">[</span><span class="s2">&quot;customer&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;customer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span> <span class="k">else</span> <span class="kc">None</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">custom_fields</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">[</span><span class="s2">&quot;customFields&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;customFields&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span> <span class="k">else</span> <span class="kc">None</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span><span class="p">[</span><span class="s2">&quot;customFields&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;customFields&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span> <span class="k">else</span> <span class="kc">None</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_json</span></div>
 </pre></div>
 

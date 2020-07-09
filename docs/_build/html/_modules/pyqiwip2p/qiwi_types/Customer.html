@@ -46,6 +46,8 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Объект пользователя/покупателя. Неизвестно, зачем эта информация нужна QIWI, но раз можно, то почему бы и нет. Для удобства работы с QIWI API.</span>
 
+<span class="sd">	**Аргументы**</span>
+
 <span class="sd">	:param phone: номер телефона практически в любом формате</span>
 <span class="sd">	:type phone: ``str`` or ``int``, optional</span>
 <span class="sd">	:param email: электронная почта</span>
@@ -55,9 +57,21 @@
 <span class="sd">	:param json_data: словарь с полями phone, email и account. При наличии этого параметра, другие игнорируются.</span>
 <span class="sd">	:type json_data: ``dict``, optional</span>
 <span class="sd">	:param ignore_valid: игнорировать невалидные значения номера телефона и почты</span>
-<span class="sd">	:type ignore_valid: `bool``, optional</span>
+<span class="sd">	:type ignore_valid: ``bool``, optional</span>
 <span class="sd">	:param ignore_args: игнорировать отсутствующее значение и поставить None вместо него.</span>
-<span class="sd">	:type ignore_args: ``bool`, optional</span>
+<span class="sd">	:type ignore_args: ``bool``, optional</span>
+<span class="sd">	:rtype: dict</span>
+
+<span class="sd">	**Аттрибуты**</span>
+
+<span class="sd">	:param phone: номер телефона в формате</span>
+<span class="sd">	:type phone: ``str`` в формате *+79994442211*</span>
+<span class="sd">	:param email: адрес электронной почты</span>
+<span class="sd">	:type email: ``str``</span>
+<span class="sd">	:param account: идентификатор клиента в вашей системе</span>
+<span class="sd">	:type account: &#39;&#39;str&#39;&#39;</span>
+<span class="sd">	:param dict: json-словарь для использования в API</span>
+<span class="sd">	:type dict: ``dict``</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">phone</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 						<span class="n">email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

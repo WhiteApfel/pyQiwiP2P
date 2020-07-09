@@ -3,6 +3,7 @@ import typing
 import requests
 
 from pyqiwip2p.qiwi_types import Bill
+from pyqiwip2p.qiwi_types import QiwiError
 from pyqiwip2p.qiwi_types import QiwiCustomer
 from pyqiwip2p.qiwi_types import QiwiDatetime
 
@@ -11,8 +12,10 @@ class QiwiP2P:
 	"""
 	Основной инструмент-клиент для взаимодействия с API QiwiP2P
 
+	**Аргументы и аттрибуты*
+
 	:param auth_key: приватный ключ авторизации со страницы https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.
-	:type auth_key: ``str``, optional
+	:type auth_key: ``str``
 	:param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB*
 	:type currency: ``str``, optional
 	"""
@@ -36,16 +39,17 @@ class QiwiP2P:
 		:type expiration: ``int``, ``datetime`` or ``str``, optional
 		:param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.
 		:type lifetime: ``int``, optional, default=30
-		:param customer: объект QiwiCustomer или dict с полями phone, email и customer
+		:param customer: объект QiwiCustomer или ``dict`` с полями phone, email и customer
 		:type customer: ``QiwiCustomer`` or ``dict``, optional
 		:param comment: комментарий к платежу. До 255 символов
 		:type comment: ``str``, optional
 		:param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините.
 		:type fields: ``dict``, optional
+		:raise QiwiError: объект ответа Qiwi, если запрос не увенчался успехом
 		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
-		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime().expiration(lifetime)
+		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime(lifetime).qiwi
 		amount = str(round(float(amount), 2)) if len(str(float(amount)).split(".")[1]) > 1 else str(round(float(amount), 2))+"0"
 		qiwi_request_headers = {
 			"Accept": "application/json",
