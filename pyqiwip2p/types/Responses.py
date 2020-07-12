@@ -1,8 +1,8 @@
-from pyqiwip2p.qiwi_types.Errors import QiwiError
+from pyqiwip2p.types.Errors import QiwiError
 from requests import Response
 import typing
-from pyqiwip2p.qiwi_types import QiwiCustomer
-from pyqiwip2p.qiwi_types import QiwiDatetime
+from pyqiwip2p.types import QiwiCustomer
+from pyqiwip2p.types import QiwiDatetime
 
 
 class Bill:

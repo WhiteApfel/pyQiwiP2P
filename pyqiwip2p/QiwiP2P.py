@@ -3,10 +3,10 @@ import time
 import random
 import requests
 
-from pyqiwip2p.qiwi_types import Bill
-from pyqiwip2p.qiwi_types import QiwiError
-from pyqiwip2p.qiwi_types import QiwiCustomer
-from pyqiwip2p.qiwi_types import QiwiDatetime
+from pyqiwip2p.types import Bill
+from pyqiwip2p.types import QiwiError
+from pyqiwip2p.types import QiwiCustomer
+from pyqiwip2p.types import QiwiDatetime
 
 
 class QiwiP2P:
@@ -55,7 +55,7 @@ class QiwiP2P:
 		"""
 		bill_id = bill_id if bill_id else f"WhiteApfel-PyQiwiP2P-{str(int(time.time()*100))[4:]}-{int(random.random()*1000)}"
 		amount = amount if amount else self.default_amount
-		expiration = QiwiDatetime(expiration).qiwi if expiration else QiwiDatetime(lifetime).qiwi
+		expiration = QiwiDatetime(moment=expiration).qiwi if expiration else QiwiDatetime(lifetime=lifetime).qiwi
 		amount = str(round(float(amount), 2)) if len(str(float(amount)).split(".")[1]) > 1 else str(round(float(amount), 2))+"0"
 		qiwi_request_headers = {
 			"Accept": "application/json",

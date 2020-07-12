@@ -30,3 +30,4 @@
    Use
    Client
    Types
+   Notify

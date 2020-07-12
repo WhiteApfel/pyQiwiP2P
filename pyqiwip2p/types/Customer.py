@@ -25,12 +25,12 @@ class QiwiCustomer:
 
 	**Аттрибуты**
 
-	:param phone: номер телефона в формате
+	:param phone: номер телефона
 	:type phone: ``str`` в формате *+79994442211*
 	:param email: адрес электронной почты
 	:type email: ``str``
 	:param account: идентификатор клиента в вашей системе
-	:type account: ''str''
+	:type account: ``str``
 	:param dict: json-словарь для использования в API
 	:type dict: ``dict``
 	"""

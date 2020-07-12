@@ -4,7 +4,7 @@
 ::
 
  from pyqiwip2p import QiwiP2P
- from pyqiwip2p.qiwi_types import QiwiCustomer, QiwiDatetime
+ from pyqiwip2p.types import QiwiCustomer, QiwiDatetime
 
  QIWI_PRIV_KEY = "abCdef...xYz"
 
