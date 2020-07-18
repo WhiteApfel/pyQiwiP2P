@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name='pyQiwiP2P',
-	version='v1-1.0',
+	version='v1-1.2',
 	packages=['pyqiwip2p', 'pyqiwip2p.types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
 	license='MIT Licence',
