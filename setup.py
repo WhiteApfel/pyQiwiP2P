@@ -9,7 +9,7 @@ def read(filename):
 
 setup(
 	name='pyQiwiP2P',
-	version='1.0a3',
+	version='1.0a5',
 	packages=['pyqiwip2p', 'pyqiwip2p.types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
 	license='Mozilla Public License 2.0',
