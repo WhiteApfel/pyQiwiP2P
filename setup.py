@@ -19,10 +19,9 @@ setup(
 	install_requires=['cherrypy', 'phonenumbers', 'email_validator'],
 	project_urls={
 		"Документальное чтиво": "https://pyqiwip2p.readthedocs.io/ru/latest/",
-		"На морожешку и кофеёк": "https://rocketbank.ru/whiteapfel",
-		"Оставить пару ласковых": "https://saythanks.io/to/white%40pfel.ru",
-		"Сделано из этого": "https://github.com/WhiteApfel/pyQiwiP2P",
-		"Писать автору сюда": "https://t.me/apfel"
+		"Донатик": "https://rocketbank.ru/whiteapfel",
+		"Исходнички": "https://github.com/WhiteApfel/pyQiwiP2P",
+		"Тележка для вопросов": "https://t.me/apfel"
 	},
 	long_description=read('README.md'),
 	long_description_content_type="text/markdown",
