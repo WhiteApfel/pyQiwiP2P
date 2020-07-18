@@ -5,7 +5,7 @@ setup(
 	version='v1-1.2',
 	packages=['pyqiwip2p', 'pyqiwip2p.types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
-	license='MIT Licence',
+	license='Mozilla Public License 2.0',
 	author='WhiteApfel pfel.cc',
 	author_email='white@pfel.ru',
 	description='pyQiwiP2P'
