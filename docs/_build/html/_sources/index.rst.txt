@@ -18,6 +18,14 @@
 Установка
 ---------
 
+Через pip:
+
+::
+
+ python3 -m pip install --update pyqiwip2p
+
+Из исходников:
+
 ::
 
  git clone https://github.com/WhiteApfel/pyQiwiP2P

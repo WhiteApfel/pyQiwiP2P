@@ -1,4 +1,11 @@
 from setuptools import setup
+from io import open
+
+
+def read(filename):
+	with open(filename, encoding='utf-8') as file:
+		return file.read()
+
 
 setup(
 	name='pyQiwiP2P',
@@ -16,5 +23,8 @@ setup(
 		"Оставить пару ласковых": "https://saythanks.io/to/white%40pfel.ru",
 		"Это сделано из этого": "https://github.com/pypa/sampleproject/",
 		"А поговорить можно тут": "https://t.me/apfel"
-	}
+	},
+	long_description=read('README.md'),
+	long_description_content_type="text/markdown",
+	keywords='qiwip2p api p2p bill tools sdk python'
 )
