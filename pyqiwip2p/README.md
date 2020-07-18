@@ -91,7 +91,7 @@ def print_bill(bill: Bill):
 # Теперь запустим сервер на 12345'ом порту
 qiwi_notify.start(port=12345)
 ```
-####Настройка проксирующего Nginx
+### Настройка проксирующего Nginx
 Для порта 12345 (как в примере выше) будет:
 ```
 server {
@@ -104,7 +104,7 @@ server {
     }
 }
 ```
-В таком случае нужно при генерации ключей API на https://qiwi.com/p2p-admin/transfers/api
+В таком случае при генерации ключей API на https://qiwi.com/p2p-admin/transfers/api
 нужно будет указать `https://qiwinotify.domain.com/superSecretQiwiURI` в качестве URL для уведомлений
 
 **P.S. за неприходящие от Qiwi запросы ответсвенность не несу, как и за приходящие, кстати, тоже.
