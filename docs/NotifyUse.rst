@@ -8,7 +8,7 @@
 
  QIWI_PRIV_KEY = "abCdef...xYz"
 
- qiwi_notify = QiwiNotify(PrivKey)
+ qiwi_notify = QiwiNotify(QIWI_PRIV_KEY)
 
  #
  # Хэндлер принимает в себя аргументом функцию,
