@@ -9,7 +9,7 @@ class QiwiError(Exception):
 	:param response_json: json-словарь ответа на запрос
 	:type response_json: ``dict``
 
-	**Аттрибуты**
+	**Атрибуты**
 
 	:param service_name: название сервсиса
 	:type service_name: ``str``

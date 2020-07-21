@@ -8,12 +8,14 @@ class QiwiDatetime:
 	"""
 	Тип для удобной работы с форматами времени.
 
+	**Аргументы**
+
 	:param moment: нужный момент времени в одном из удобных форматов для универсализации
 	:type moment: ``str``, ``int``, ``datetime``, optional, default=now
 	:param lifetime: время жизни счета. Генерирует момент времени с разницей в ``lifetime`` минут. Если указано, параметр ``moment`` игнорируется.
 	:type lifetime: ``int``
 
-	Класс содержит аттрибуты
+	**Атрибуты**
 
 	:param datetime: момент времени
 	:type datetime: ``datetime.datetime``

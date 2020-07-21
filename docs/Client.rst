@@ -1,5 +1,5 @@
 Клиент
 ==============
 
-.. autoclass:: pyqiwip2p.QiwiP2P.QiwiP2P
+.. autoclass:: pyqiwip2p.QiwiP2P
     :members:

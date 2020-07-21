@@ -23,7 +23,7 @@ class QiwiCustomer:
 	:type ignore_args: ``bool``, optional
 	:rtype: dict
 
-	**Аттрибуты**
+	**Атрибуты**
 
 	:param phone: номер телефона
 	:type phone: ``str`` в формате *+79994442211*

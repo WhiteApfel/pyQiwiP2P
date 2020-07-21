@@ -14,7 +14,7 @@ class Bill:
 	:param response: ответ от серверов киви. Можно просто json.
 	:type response: Response or ``dict``
 
-	**Аттрибуты**
+	**Атрибуты**
 
 	:param site_id: идентификатор вашего сайта в системе Qiwi
 	:type site_id: ``str``
