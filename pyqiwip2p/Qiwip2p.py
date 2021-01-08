@@ -1,12 +1,16 @@
 import typing
 import time
 import random
+import logging
 import requests
 
 from pyqiwip2p.types import Bill
 from pyqiwip2p.types import QiwiError
 from pyqiwip2p.types import QiwiCustomer
 from pyqiwip2p.types import QiwiDatetime
+
+
+logger = logging.getLogger(__name__)
 
 
 class QiwiP2P:
@@ -72,8 +76,10 @@ class QiwiP2P:
 			"customer": customer.dict if type(customer) is QiwiCustomer else QiwiCustomer(json_data=customer).dict if customer else {},
 			"customFields": fields if fields else {}
 		}
-		print(qiwi_request_headers)
-		print(qiwi_request_data)
+
+		logger.info(qiwi_request_headers)
+		logger.info(qiwi_request_data)
+
 		qiwi_response = Bill(requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 					json=qiwi_request_data, headers=qiwi_request_headers))
 		return qiwi_response
