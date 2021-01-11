@@ -92,7 +92,6 @@ class QiwiP2P:
 			"customFields": fields if fields else {}
 		}
 
-		logger.info(qiwi_request_headers)
 		logger.info(qiwi_request_data)
 
 		qiwi_response = Bill(requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
