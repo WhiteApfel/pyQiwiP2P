@@ -1,8 +1,10 @@
 from pyqiwip2p.types.Errors import QiwiError
 from requests import Response
 import typing
+import json
 from pyqiwip2p.types import QiwiCustomer
 from pyqiwip2p.types import QiwiDatetime
+from Qiwip2p import logger
 
 
 class Bill:
@@ -44,7 +46,11 @@ class Bill:
 	:type json: ``dict``
 	"""
 	def __init__(self, response: typing.Union[Response, dict]):
-		self.r_json = response.json() if type(response) is Response else response
+		self.r_json = response if type(response) is Response else response
+		try:
+			self.r_json = self.r_json.json()
+		except json.decoder.JSONDecodeError as e:
+			raise ValueError("Qiwi response is not JSON. This is Qiwi-side bug. Please try again later.")
 		if "errorCode" in self.r_json:
 			raise QiwiError(self.r_json)
 		else:
