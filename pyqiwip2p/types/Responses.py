@@ -4,7 +4,6 @@ import typing
 import json
 from pyqiwip2p.types import QiwiCustomer
 from pyqiwip2p.types import QiwiDatetime
-from Qiwip2p import logger
 
 
 class Bill:
