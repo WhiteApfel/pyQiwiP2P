@@ -9,7 +9,7 @@ def read(filename):
 
 setup(
 	name='pyQiwiP2P',
-	version='1.0a7',
+	version='1.0a8',
 	packages=['pyqiwip2p', 'pyqiwip2p.types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
 	license='Mozilla Public License 2.0',
@@ -25,5 +25,5 @@ setup(
 	},
 	long_description=read('README.md'),
 	long_description_content_type="text/markdown",
-	keywords='qiwip2p api p2p bill tools'
+	keywords='qiwip2p api p2p bill tools sdk'
 )
