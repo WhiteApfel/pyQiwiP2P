@@ -1,20 +1,20 @@
 Types
 =============================
 
-.. autoclass:: pyqiwip2p.types.Customer.QiwiCustomer
+.. autoclass:: pyqiwip2p.p2p_types.Customer.QiwiCustomer
    :members:
 
 -----------------
 
-.. autoclass:: pyqiwip2p.types.Errors.QiwiError
+.. autoclass:: pyqiwip2p.p2p_types.Errors.QiwiError
    :members:
 
 -----------------
 
-.. autoclass:: pyqiwip2p.types.QiwiDatetime.QiwiDatetime
+.. autoclass:: pyqiwip2p.p2p_types.QiwiDatetime.QiwiDatetime
    :members:
 
 -----------------
 
-.. autoclass:: pyqiwip2p.types.Responses.Bill
+.. autoclass:: pyqiwip2p.p2p_types.Responses.Bill
    :members:
