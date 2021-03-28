@@ -1,4 +1,4 @@
-from pyqiwip2p.types import QiwiDatetime
+from pyqiwip2p.p2p_types import QiwiDatetime
 
 class QiwiError(Exception):
 	"""

@@ -991,7 +991,7 @@ function siblingCheck( a, b ) {
 }
 
 /**
- * Returns a function to use in pseudos for input types
+ * Returns a function to use in pseudos for input p2p_types
  * @param {String} type
  */
 function createInputPseudo( type ) {
@@ -1813,7 +1813,7 @@ Expr = Sizzle.selectors = {
 					2 * ( match[ 3 ] === "even" || match[ 3 ] === "odd" ) );
 				match[ 5 ] = +( ( match[ 7 ] + match[ 8 ] ) || match[ 3 ] === "odd" );
 
-				// other types prohibit arguments
+				// other p2p_types prohibit arguments
 			} else if ( match[ 3 ] ) {
 				Sizzle.error( match[ 0 ] );
 			}
@@ -2219,7 +2219,7 @@ Expr = Sizzle.selectors = {
 			return !Expr.pseudos[ "empty" ]( elem );
 		},
 
-		// Element/input types
+		// Element/input p2p_types
 		"header": function( elem ) {
 			return rheader.test( elem.nodeName );
 		},
@@ -5124,13 +5124,13 @@ function safeActiveElement() {
 function on( elem, types, selector, data, fn, one ) {
 	var origFn, type;
 
-	// Types can be a map of types/handlers
+	// Types can be a map of p2p_types/handlers
 	if ( typeof types === "object" ) {
 
-		// ( types-Object, selector, data )
+		// ( p2p_types-Object, selector, data )
 		if ( typeof selector !== "string" ) {
 
-			// ( types-Object, data )
+			// ( p2p_types-Object, data )
 			data = data || selector;
 			selector = undefined;
 		}
@@ -5142,18 +5142,18 @@ function on( elem, types, selector, data, fn, one ) {
 
 	if ( data == null && fn == null ) {
 
-		// ( types, fn )
+		// ( p2p_types, fn )
 		fn = selector;
 		data = selector = undefined;
 	} else if ( fn == null ) {
 		if ( typeof selector === "string" ) {
 
-			// ( types, selector, fn )
+			// ( p2p_types, selector, fn )
 			fn = data;
 			data = undefined;
 		} else {
 
-			// ( types, data, fn )
+			// ( p2p_types, data, fn )
 			fn = data;
 			data = selector;
 			selector = undefined;
@@ -5316,7 +5316,7 @@ jQuery.event = {
 			return;
 		}
 
-		// Once for each type.namespace in types; type may be omitted
+		// Once for each type.namespace in p2p_types; type may be omitted
 		types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
 		t = types.length;
 		while ( t-- ) {
@@ -5939,7 +5939,7 @@ jQuery.fn.extend( {
 		}
 		if ( typeof types === "object" ) {
 
-			// ( types-object [, selector] )
+			// ( p2p_types-object [, selector] )
 			for ( type in types ) {
 				this.off( type, selector, types[ type ] );
 			}
@@ -5947,7 +5947,7 @@ jQuery.fn.extend( {
 		}
 		if ( selector === false || typeof selector === "function" ) {
 
-			// ( types [, fn] )
+			// ( p2p_types [, fn] )
 			fn = selector;
 			selector = undefined;
 		}
@@ -9324,7 +9324,7 @@ jQuery.extend( {
 		},
 
 		// Data converters
-		// Keys separate source (or catchall "*") and destination types with a single space
+		// Keys separate source (or catchall "*") and destination p2p_types with a single space
 		converters: {
 
 			// Convert anything to text
@@ -10715,7 +10715,7 @@ jQuery.fn.extend( {
 	},
 	undelegate: function( selector, types, fn ) {
 
-		// ( namespace ) or ( selector, types [, fn] )
+		// ( namespace ) or ( selector, p2p_types [, fn] )
 		return arguments.length === 1 ?
 			this.off( selector, "**" ) :
 			this.off( types, selector || "**", fn );

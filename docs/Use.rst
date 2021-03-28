@@ -19,6 +19,16 @@
  # Проверим статус выставленного счета
  print(p2p.check(bill_id=new_bill.bill_id).status)
 
+ # Или через сам объект класса Bill
+ # Внимание! При кажом обращении к Bill.actual происходит получение
+ # данных от Qiwi.
+ print(bill.actual.status)
+
+ # Если необходимо просто обновить и дальше работать с актуальным
+ # объектом, то достаточно воспользоваться методом Bill.update_info()
+ bill.update_info()
+ print(bill.bill_id, bill.status, bill.status_changed)
+
  # Потеряли ссылку на оплату счета? Не проблема!
  print(p2p.check(bill_id=245532).pay_url)
 

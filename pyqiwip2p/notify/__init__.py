@@ -2,7 +2,7 @@ import cherrypy
 import json
 import hmac
 import hashlib
-from pyqiwip2p.types.Responses import Bill
+from pyqiwip2p.p2p_types.Responses import Bill
 
 
 class QiwiNotify:

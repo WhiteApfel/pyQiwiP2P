@@ -4,10 +4,10 @@ import random
 import logging
 import requests
 
-from pyqiwip2p.types import Bill
-from pyqiwip2p.types import QiwiError
-from pyqiwip2p.types import QiwiCustomer
-from pyqiwip2p.types import QiwiDatetime
+from pyqiwip2p.p2p_types import Bill
+from pyqiwip2p.p2p_types import QiwiError
+from pyqiwip2p.p2p_types import QiwiCustomer
+from pyqiwip2p.p2p_types import QiwiDatetime
 
 logger = logging.getLogger(__name__)
 
@@ -94,8 +94,9 @@ class QiwiP2P:
 
 		logger.info(qiwi_request_data)
 
-		qiwi_response = Bill(requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
-										  json=qiwi_request_data, headers=qiwi_request_headers))
+		qiwi_raw_response = requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+										  json=qiwi_request_data, headers=qiwi_request_headers)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
 	def check(self, bill_id: typing.Union[str, int]):
@@ -111,8 +112,10 @@ class QiwiP2P:
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
 		}
-		qiwi_response = Bill(requests.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
-										  headers=qiwi_request_headers))
+
+		qiwi_raw_response = requests.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+										  headers=qiwi_request_headers)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
 	def reject(self, bill_id: typing.Union[str, int]):
@@ -128,6 +131,7 @@ class QiwiP2P:
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
 		}
-		qiwi_response = Bill(requests.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
-										   headers=qiwi_request_headers))
+		qiwi_raw_response = requests.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
+										   headers=qiwi_request_headers)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response

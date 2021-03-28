@@ -17,10 +17,9 @@
 
 ```python
 from pyqiwip2p import QiwiP2P
-from pyqiwip2p.types import QiwiCustomer, QiwiDatetime
+from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime
 
 QIWI_PRIV_KEY = "abCdef...xYz"
-
 
 p2p = QiwiP2P(auth_key=QIWI_PRIV_KEY)
 
@@ -37,7 +36,6 @@ print(p2p.check(bill_id=245532).pay_url)
 
 # Клиент отменил заказ? Тогда и счет надо закрыть
 p2p.reject(bill_id=new_bill.bill_id)
-
 
 # Если планируете выставлять счета с одинаковой суммой,
 # можно воспользоваться параметром default_amount
@@ -67,11 +65,12 @@ print(new_bill.bill_id, new_bill.pay_url)
 
 ```python
 from pyqiwip2p.notify import QiwiNotify
-from pyqiwip2p.types import Bill
+from pyqiwip2p.p2p_types import Bill
 
 QIWI_PRIV_KEY = "abCdef...xYz"
 
 qiwi_notify = QiwiNotify(QIWI_PRIV_KEY)
+
 
 #
 # Хэндлер принимает в себя аргументом функцию,
@@ -81,12 +80,14 @@ qiwi_notify = QiwiNotify(QIWI_PRIV_KEY)
 # Добавим хэндлер, который будет печатать billID для всех счетов
 @qiwi_notify.handler(lambda bill: True)
 def print_bill(bill: Bill):
-    print(bill.bill_id)
+	print(bill.bill_id)
+
 
 # Создадим хэндлер, который будет печатать сумму оплаченных счетов
 @qiwi_notify.handler(lambda bill: bill.status == "PAID")
 def print_bill(bill: Bill):
-    print(bill.amount)
+	print(bill.amount)
+
 
 # Теперь запустим сервер на 12345'ом порту
 qiwi_notify.start(port=12345)

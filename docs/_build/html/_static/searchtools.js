@@ -332,7 +332,7 @@ var Search = {
         if (fullnameLower.indexOf(object) > -1) {
           var score = 0;
           var parts = fullnameLower.split('.');
-          // check for different match types: exact matches of full name or
+          // check for different match p2p_types: exact matches of full name or
           // "last name" (i.e. last dotted part)
           if (fullnameLower == object || parts[parts.length - 1] == object) {
             score += Scorer.objNameMatch;
