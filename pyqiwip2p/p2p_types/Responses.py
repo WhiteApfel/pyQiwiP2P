@@ -22,6 +22,7 @@ class Bill:
 	:type qiwi_p2p: QiwiP2P, optional
 
 	**Атрибуты**
+
 	:param site_id: идентификатор вашего сайта в системе Qiwi
 	:type site_id: ``str``
 	:param bill_id: идентификатор счета
