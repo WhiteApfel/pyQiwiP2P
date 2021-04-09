@@ -54,7 +54,7 @@ class QiwiNotify:
 		class WebhookServer(object):
 			def check_headers(self, headers):
 				if "content-type" in headers and headers["content-type"] == "application/json" and \
-						"X-Api-Signature-SHA25" in headers:
+						"X-Api-Signature-SHA256" in headers:
 					return True
 				return False
 
@@ -62,7 +62,7 @@ class QiwiNotify:
 			def qiwi_notify(self):
 				if self.check_headers(cherrypy.request.headers):
 					json_string = cherrypy.request.body.read().decode("utf-8")
-					qiwi._parse(json.loads(json_string), cherrypy.request.headers["X-Api-Signature-SHA25"])
+					qiwi._parse(json.loads(json_string), cherrypy.request.headers["X-Api-Signature-SHA256"])
 					return ''
 				else:
 					raise cherrypy.HTTPError(403)
