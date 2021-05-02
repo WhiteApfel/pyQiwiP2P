@@ -20,7 +20,7 @@ class QiwiDatetime:
 	:param datetime: момент времени
 	:type datetime: ``datetime.datetime``
 	:param qiwi: момент времени
-	:type qiwi: ``str`` в формате "*YYYY-MM-DDThh:mm:ss+hh:mm*"
+	:type qiwi: ``str`` в формате "*YYYY-MM-DDThh:mm:ss.mss+hh:mm*"
 	:param timestamp: момент времени
 	:type timestamp: ``int`` в формате unix-времени
 	"""
@@ -28,7 +28,7 @@ class QiwiDatetime:
 		if lifetime:
 			self.expiration(lifetime)
 		else:
-			self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+-][0-1][0-9]:[0-5][0-9]"
+			self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}[+-][0-1][0-9]:[0-5][0-9]"
 			self.datetime: datetime = self.now_datetime()
 			self.qiwi = self.datetime.isoformat()
 			self.timestamp = self.datetime.timestamp()
@@ -37,7 +37,7 @@ class QiwiDatetime:
 					if re.match(self._exp_regex, moment):
 						self.set_from_qiwi(moment)
 					else:
-						raise TypeError("The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс+\-чч:мм'")
+						raise TypeError("The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс.мсс+\-чч:мм'")
 				if type(moment) is int or type(moment) is float:
 					if moment < time.time():
 						raise ValueError("Time has passed")
@@ -67,7 +67,7 @@ class QiwiDatetime:
 		return int(self.qiwi_datetime(dt).timestamp())
 
 	def qiwi_datetime(self, dt: str):
-		return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S%z")
+		return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z")
 
 	def set_from_timestamp(self, timestamp: typing.Union[int, float]):
 		self.datetime: datetime = self.timestamp_datetime(int(timestamp))
