@@ -7,7 +7,7 @@ from starlette.responses import Response
 from starlette import status
 from starlette.routing import Route
 
-
+import inspect
 from typing import Optional
 from datetime import date, datetime, time, timedelta
 from pyqiwip2p.p2p_types.Responses import Bill
@@ -24,9 +24,10 @@ class AioQiwiNotify:
 	:type auth_key: ``str``
 	"""
 
-	def __init__(self, auth_key: str):
+	def __init__(self, auth_key: str, once=False):
 		self.auth_key = auth_key
 		self.handlers = []
+		self.once = once
 		routes = [
 			Route("/notify", endpoint=self.server)
 		]
@@ -58,7 +59,12 @@ class AioQiwiNotify:
 	async def _check(self, bill):
 		for handler in self.handlers:
 			if handler["filter"](bill):
-				handler["handler"](bill)
+				if inspect.iscoroutinefunction(handler["handler"]):
+					await handler["handler"](bill)
+				else:
+					handler["handler"](bill)
+				if self.once:
+					break
 
 	async def server(self, request: Request):
 		await self._parse(await request.json(), request.headers["X-Api-Signature-SHA256"])
