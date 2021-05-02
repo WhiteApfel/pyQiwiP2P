@@ -14,9 +14,10 @@ class QiwiNotify:
 	:param auth_key: приватный ключ, на который настроен прием уведомлений.
 	:type auth_key: ``str``
 	"""
-	def __init__(self, auth_key: str):
+	def __init__(self, auth_key: str, once=False):
 		self.auth_key = auth_key
 		self.handlers = []
+		self.once = once
 
 	def handler(self, func=None):
 		def decorator(handler):
@@ -42,6 +43,8 @@ class QiwiNotify:
 		for handler in self.handlers:
 			if handler["filter"](bill):
 				handler["handler"](bill)
+			if self.once:
+				break
 
 	def start(qiwi, port: int = 8099):
 		"""
