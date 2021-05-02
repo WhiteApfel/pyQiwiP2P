@@ -1,8 +1,10 @@
 import cherrypy
+import threading
 import json
 import hmac
 import hashlib
 from pyqiwip2p.p2p_types.Responses import Bill
+from pyqiwip2p.notify.async_client import AioQiwiNotify
 
 
 class QiwiNotify:
@@ -68,4 +70,5 @@ class QiwiNotify:
 					raise cherrypy.HTTPError(403)
 
 		cherrypy.config.update({'server.socket_port': port})
-		cherrypy.quickstart(WebhookServer())
+		t = threading.Thread(target=lambda ws: cherrypy.quickstart(ws()), args=(WebhookServer,))
+		t.start()
