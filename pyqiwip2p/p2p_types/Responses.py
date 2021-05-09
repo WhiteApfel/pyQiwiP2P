@@ -59,7 +59,7 @@ class Bill:
 			self.r_json = self.r_json.json()
 		except json.decoder.JSONDecodeError as e:
 			fn = f"QiwiCrash_{int(time.time())}.html"
-			with open(fn, "r") as crash:
+			with open(fn, "w+") as crash:
 				crash.write(self.r_json.text)
 			raise ValueError(
 				f"Qiwi response is not JSON. This is Qiwi-side bug. Please try again later. Qiwi response page - {fn}")
