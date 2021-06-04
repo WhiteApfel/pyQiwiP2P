@@ -9,14 +9,14 @@ def read(filename):
 
 setup(
 	name='pyQiwiP2P',
-	version='1.0a14',
+	version='1.0',
 	packages=['pyqiwip2p', 'pyqiwip2p.p2p_types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
 	license='Mozilla Public License 2.0',
 	author='WhiteApfel',
 	author_email='white@pfel.ru',
 	description='pyQiwiP2P',
-	install_requires=['cherrypy', 'phonenumbers', 'email_validator'],
+	install_requires=['cherrypy', 'phonenumbers', 'email_validator', 'requests'],
 	project_urls={
 		"Документальное чтиво": "https://pyqiwip2p.readthedocs.io/ru/latest/",
 		"Донатик": "https://pfel.cc/donate",
