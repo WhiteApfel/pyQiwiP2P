@@ -1,5 +1,6 @@
 from pyqiwip2p.p2p_types import QiwiDatetime
 
+
 class QiwiError(Exception):
 	"""
 	Штучка для удобной работы с ошибками от Qiwi
