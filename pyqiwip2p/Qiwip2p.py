@@ -2,7 +2,8 @@ import typing
 import time
 import random
 import logging
-import requests
+import httpx
+from netaddr import CIDR, IP
 
 from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiError
@@ -10,6 +11,7 @@ from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
 
 logger = logging.getLogger(__name__)
+requests = httpx.Client()
 
 
 class QiwiP2P:
@@ -29,10 +31,18 @@ class QiwiP2P:
 	def __init__(self, auth_key: str, default_amount: int = 100, currency: str = "RUB"):
 		self.auth_key = auth_key
 		self.default_amount = default_amount
+		self.is_async = False
 		if currency in ["RUB", "KZT"]:
 			self.currency = currency
 		else:
 			raise ValueError('Currency must be "RUB" or "KZT"')
+
+	@staticmethod
+	def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
+		if qiwi_ips is None:
+			qiwi_ips = ["79.142.16.0/20", "195.189.100.0/22", "91.232.230.0/23", "91.213.51.0/24"]
+		ip = IP(ip)
+		return any([ip in CIDR(net) for net in qiwi_ips])
 
 	def bill(self,
 			 bill_id: typing.Union[str, int] = None,
@@ -41,7 +51,7 @@ class QiwiP2P:
 			 expiration: typing.Union[str, int, QiwiDatetime] = None,
 			 lifetime: int = 30,
 			 customer: typing.Union[QiwiCustomer, dict] = None, comment: str = "via pyQiwiP2P made by WhiteApfel",
-			 fields: dict = None):
+			 fields: dict = None) -> Bill:
 		"""
 		Метод для выставления счета.
 
@@ -99,7 +109,7 @@ class QiwiP2P:
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def check(self, bill_id: typing.Union[str, int]):
+	def check(self, bill_id: typing.Union[str, int]) -> Bill:
 		"""
 		Проверяет статус выставленного счета.
 
@@ -118,7 +128,7 @@ class QiwiP2P:
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def reject(self, bill_id: typing.Union[str, int]):
+	def reject(self, bill_id: typing.Union[str, int]) -> Bill:
 		"""
 		Закрывает счет на оплату.
 
