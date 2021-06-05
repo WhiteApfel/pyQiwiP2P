@@ -8,6 +8,12 @@
 Есть типа [документация](https://pyqiwip2p.readthedocs.io/ru/latest/), но в ней есть и косячки, поэтому, 
 если найдёте таковой, обязательно сообщите мне. Буду искренне рад. Правда. Спасибо.
 
+### Миграция с первой версии:
+
+1. Свойство ``Bill.actual`` заменено на метод ``Bill.actual()`` для соответствия PEP8
+2. ``QiwiNotify`` по умолчанию выполняет только функцию по первому подошедшему хендлеру
+3. Будет дополняться...
+
 ---
 
 ### Что есть?
@@ -54,6 +60,50 @@ new_bill = p2p.bill()
 print(new_bill.bill_id, new_bill.pay_url)
 ```
 
+### А асинхронно могёте?
+Могём. Причём примерно так же.
+
+```python
+from pyqiwip2p import AioQiwiP2P
+from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime
+
+QIWI_PRIV_KEY = "abCdef...xYz"
+
+p2p = AioQiwiP2P(auth_key=QIWI_PRIV_KEY)
+
+# Если планируете выставлять счета с одинаковой суммой,
+# можно воспользоваться параметром default_amount
+p2p = AioQiwiP2P(auth_key=QIWI_PRIV_KEY, default_amount=148)
+
+async def main():
+    # Выставим счет на сумму 228 рублей который будет работать 45 минут
+    new_bill = await p2p.bill(bill_id=212332030, amount=228, lifetime=45)
+    
+    print(new_bill.bill_id, new_bill.pay_url)
+    
+    # Проверим статус выставленного счета
+    print(await p2p.check(bill_id=new_bill.bill_id).status)
+    
+    # Потеряли ссылку на оплату счета? Не проблема!
+    print(await p2p.check(bill_id=245532).pay_url)
+    
+    # Клиент отменил заказ? Тогда и счет надо закрыть
+    await p2p.reject(bill_id=new_bill.bill_id)
+    
+    # Если не указывать в методе p2p.bill() значение суммы заказа,
+    # будет применяться указанная базовая сумма, которую вы установили
+    new_bill = await p2p.bill(bill_id=6627358)
+    
+    # А ещё можно не указывать bill_id, тогда значение сгенерируется автоматически.
+    # Его можно будет посмотреть в объекте ответа Bill
+    # В комбинации со стандартным значением суммы будет вот так
+    new_bill = await p2p.bill()
+    print(new_bill.bill_id, new_bill.pay_url)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+```
+
 ### И всё?
 Нет, не всё. Ещё можно настроить кивишные уведомления на свой сервер, 
 для этого придется немного пострадать, но лишь немного.
@@ -94,8 +144,12 @@ def print_bill(bill: Bill):
 # Теперь запустим сервер на 12345'ом порту
 qiwi_notify.start(port=12345)
 ```
+
+### И асинхронный сервер, наверное, у вас есть?
+Есть. Дополню информацию позже. #TODO.
+
 ### Настройка проксирующего Nginx
-Для порта 12345 (как в примере выше) будет:
+Для порта 12345 (как в примерах выше) будет:
 ```
 server {
     listen 443;
@@ -113,6 +167,8 @@ server {
 **P.S. за неприходящие от Qiwi запросы ответственность не несу, как и за приходящие, кстати, тоже.
 Если запроса от Qiwi не было, то пишите им в поддержку [@qiwi_api_help_bot](https://t.me/qiwi_api_help_bot)**
 
+### Для самозанятых
+От создателя этой либы есть либа для работы с API Мой налог для выставления чеков.
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_large)
