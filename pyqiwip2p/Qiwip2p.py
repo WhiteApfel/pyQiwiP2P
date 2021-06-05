@@ -3,7 +3,7 @@ import time
 import random
 import logging
 import httpx
-from netaddr import CIDR, IP
+from ipaddress import IPv4Network, IPv4Address
 
 from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiError
@@ -41,8 +41,8 @@ class QiwiP2P:
 	def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
 		if qiwi_ips is None:
 			qiwi_ips = ["79.142.16.0/20", "195.189.100.0/22", "91.232.230.0/23", "91.213.51.0/24"]
-		ip = IP(ip)
-		return any([ip in CIDR(net) for net in qiwi_ips])
+		ip = IPv4Address(ip)
+		return any([ip in IPv4Network(net) for net in qiwi_ips])
 
 	def bill(self,
 			 bill_id: typing.Union[str, int] = None,

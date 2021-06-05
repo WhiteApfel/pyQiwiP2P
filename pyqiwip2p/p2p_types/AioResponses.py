@@ -7,7 +7,7 @@ from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
 
 
-class Bill:
+class AioBill:
 	"""
 	Объект для удобной работы со счетом
 
@@ -88,7 +88,7 @@ class Bill:
 		В историю Bill.bill_history будет добавлен актуальный Bill. Зачем? Не знаю, пусть будет. Может кому-то пригодится.
 
 		:return: Объект счета с обновленной информацией
-		:rtype: Bill
+		:rtype: AioBill
 		"""
 		if self.__p2p:
 			actual = await self.__get_actual()
@@ -102,7 +102,7 @@ class Bill:
 		Возвращает новый экземпляр Bill с актуальной информацией.
 
 		:return: Объект счета с обновленной информацией
-		:rtype: Bill
+		:rtype: AioBill
 		"""
 		if self.__p2p:
 			return await self.__p2p.check(self.bill_id)
@@ -112,7 +112,7 @@ class Bill:
 		Изменяет текущий экземпляр Bill, устанавливая актуальную информацию.
 
 		:return: Объект счета с обновленной информацией
-		:rtype: Bill
+		:rtype: AioBill
 		"""
 		actual = await self.__get_actual()
 		actual.bill_history = self.bill_history
