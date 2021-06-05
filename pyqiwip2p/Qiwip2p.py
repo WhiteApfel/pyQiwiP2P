@@ -3,7 +3,7 @@ import time
 import random
 import logging
 import httpx
-from ipaddress import IPv4Network, IPv4Address
+from netaddr import CIDR, IP
 
 from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiError
@@ -41,8 +41,8 @@ class QiwiP2P:
 	def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
 		if qiwi_ips is None:
 			qiwi_ips = ["79.142.16.0/20", "195.189.100.0/22", "91.232.230.0/23", "91.213.51.0/24"]
-		ip = IPv4Address(ip)
-		return any([ip in IPv4Network(net) for net in qiwi_ips])
+		ip = IP(ip)
+		return any([ip in CIDR(net) for net in qiwi_ips])
 
 	def bill(self,
 			 bill_id: typing.Union[str, int] = None,
@@ -109,7 +109,7 @@ class QiwiP2P:
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
+	def check(self, bill_id: typing.Union[str, int]) -> Bill:
 		"""
 		Проверяет статус выставленного счета.
 
@@ -118,8 +118,6 @@ class QiwiP2P:
 		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
-		if type(bill_id) is Bill:
-			bill_id = bill_id.bill_id
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
