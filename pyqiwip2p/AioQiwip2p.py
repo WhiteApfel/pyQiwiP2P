@@ -32,10 +32,23 @@ class AioQiwiP2P:
 		self.auth_key = auth_key
 		self.default_amount = default_amount
 		self.is_async = False
+		self.client = httpx.AsyncClient()
 		if currency in ["RUB", "KZT"]:
 			self.currency = currency
 		else:
 			raise ValueError('Currency must be "RUB" or "KZT"')
+
+	async def __aenter__(self):
+		return self
+
+	async def __aexit__(self, *args):
+		return await self.client.close()
+
+	def run(self, coroutine):
+		loop = asyncio.get_event_loop()
+		run = loop.run_until_complete
+		if coroutine:
+			run(coroutine)
 
 	@staticmethod
 	def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
@@ -115,7 +128,7 @@ class AioQiwiP2P:
 
 		logger.info(qiwi_request_data)
 
-		qiwi_raw_response = await requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+		qiwi_raw_response = await self.client.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  json=qiwi_request_data, headers=qiwi_request_headers)
 		qiwi_response = AioBill(qiwi_raw_response, self)
 		return qiwi_response
@@ -134,7 +147,7 @@ class AioQiwiP2P:
 			"Authorization": f"Bearer {self.auth_key}"
 		}
 
-		qiwi_raw_response = await requests.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+		qiwi_raw_response = await self.client.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  headers=qiwi_request_headers)
 		qiwi_response = AioBill(qiwi_raw_response, self)
 		return qiwi_response
@@ -152,7 +165,7 @@ class AioQiwiP2P:
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
 		}
-		qiwi_raw_response = await requests.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
+		qiwi_raw_response = await self.client.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
 										   headers=qiwi_request_headers)
 		qiwi_response = AioBill(qiwi_raw_response, self)
 		return qiwi_response
