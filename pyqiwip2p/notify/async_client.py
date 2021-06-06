@@ -24,7 +24,7 @@ class AioQiwiNotify:
 	:type auth_key: ``str``
 	"""
 
-	def __init__(self, auth_key: str, once=False):
+	def __init__(self, auth_key: str, once=True):
 		self.auth_key = auth_key
 		self.handlers = []
 		self.once = once

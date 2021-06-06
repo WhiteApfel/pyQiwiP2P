@@ -14,7 +14,7 @@ class QiwiNotify:
 	:param auth_key: приватный ключ, на который настроен прием уведомлений.
 	:type auth_key: ``str``
 	"""
-	def __init__(self, auth_key: str, once=False):
+	def __init__(self, auth_key: str, once=True):
 		self.auth_key = auth_key
 		self.handlers = []
 		self.once = once
