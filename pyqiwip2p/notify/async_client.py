@@ -29,7 +29,7 @@ class AioQiwiNotify:
 		self.handlers = []
 		self.once = once
 		routes = [
-			Route("/notify", endpoint=self.server)
+			Route("/qiwi_notify", endpoint=self.server)
 		]
 
 		self.app = Starlette(routes=routes)
@@ -69,8 +69,12 @@ class AioQiwiNotify:
 	async def server(self, request: Request):
 		await self._parse(await request.json(), request.headers["X-Api-Signature-SHA256"])
 
-	def start(self, port: int = 28561, log_level="info"):
-		asyncio.run(serve(self.app, Config()))
+	def start(self, port: int = 12345, log_level="info"):
+		config = Config()
+		config.bind = [f"0.0.0.0:{port}"]
+		asyncio.run(serve(self.app, config))
 
-	async def a_start(self, port: int = 28561, log_level="info"):
+	async def a_start(self, port: int = 12345, log_level="info"):
+		config = Config()
+		config.bind = [f"0.0.0.0:{port}"]
 		await serve(self.app, Config())

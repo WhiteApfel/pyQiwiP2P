@@ -6,7 +6,7 @@
 Документация PyQiwiP2P приветствует тебя!
 =========================================
 
-Обёрточка для `API Qiwi P2P`_ на Python.
+Удобная обёрточка для `API Qiwi P2P`_ на Python.
 
 .. _`API Qiwi P2P`: https://developer.qiwi.com/ru/p2p-payments/#API
 

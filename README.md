@@ -126,7 +126,6 @@ QIWI_PRIV_KEY = "abCdef...xYz"
 
 qiwi_notify = QiwiNotify(QIWI_PRIV_KEY)
 
-
 #
 # Хэндлер принимает в себя аргументом функцию,
 # в которую передаст объект счёта - Bill
@@ -149,7 +148,40 @@ qiwi_notify.start(port=12345)
 ```
 
 ### И асинхронный сервер, наверное, у вас есть?
-Есть. Дополню информацию позже. #TODO.
+Да есть. Причём хендлить функции можно и асинхронные, и синхронные.
+
+```python
+from pyqiwip2p import QiwiP2P, AioQiwiP2P
+from pyqiwip2p.p2p_types import Bill
+from pyqiwip2p.notify import AioQiwiNotify
+import asyncio
+
+QIWI_PRIV_KEY = "abCdef...xYz"
+
+qiwi_notify = AioQiwiNotify(QIWI_PRIV_KEY)
+p2p = AioQiwiP2P(auth_key=QIWI_PRIV_KEY)
+
+
+@qiwi_notify.handler(lambda bill: bill.status == "EXPIRED")
+async def on_expired(bill: Bill):
+	new_bill = await p2p.bill(amount=bill.amount, comment=bill.comment)
+	print(new_bill.pay_url)
+
+
+@qiwi_notify.handler(lambda bill: True)
+def on_all(bill: Bill):
+	print(bill.status)
+
+
+async def main():
+	p = asyncio.get_event_loop()
+	server = p.create_task(qiwi_notify.a_start(port=12345))
+	await server
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+```
 
 ### Настройка проксирующего Nginx
 Для порта 12345 (как в примерах выше) будет:

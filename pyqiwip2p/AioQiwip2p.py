@@ -5,7 +5,7 @@ import logging
 import httpx
 from ipaddress import IPv4Network, IPv4Address
 
-from pyqiwip2p.p2p_types import AioBill
+from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiError
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
@@ -75,7 +75,7 @@ class AioQiwiP2P:
 			 expiration: typing.Union[str, int, QiwiDatetime] = None,
 			 lifetime: int = 30,
 			 customer: typing.Union[QiwiCustomer, dict] = None, comment: str = "via pyQiwiP2P made by WhiteApfel",
-			 fields: dict = None) -> AioBill:
+			 fields: dict = None) -> Bill:
 		"""
 		Метод для выставления счета.
 
@@ -97,7 +97,7 @@ class AioQiwiP2P:
 		:type fields: ``dict``, optional
 		:raise QiwiError: объект ответа Qiwi, если запрос не увенчался успехом
 		:return: Объект счета при успешном выполнении
-		:rtype: AioBill
+		:rtype: Bill
 		"""
 		bill_id = bill_id if bill_id else f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-{int(random.random() * 1000)}"
 		amount = amount if amount else self.default_amount
@@ -130,18 +130,20 @@ class AioQiwiP2P:
 
 		qiwi_raw_response = await self.client.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  json=qiwi_request_data, headers=qiwi_request_headers)
-		qiwi_response = AioBill(qiwi_raw_response, self)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	async def check(self, bill_id: typing.Union[str, int]) -> AioBill:
+	async def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
 		"""
 		Проверяет статус выставленного счета.
 
 		:param bill_id: идентификатор заказа/счета в вашей системе
-		:type bill_id: ``str`` or ``int``
+		:type bill_id: ``str`` or ``int`` or Bill
 		:return: Объект счета при успешном выполнении
-		:rtype: AioBill
+		:rtype: Bill
 		"""
+		if type(bill_id) is Bill:
+			bill_id = bill_id.bill_id
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
@@ -149,23 +151,25 @@ class AioQiwiP2P:
 
 		qiwi_raw_response = await self.client.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  headers=qiwi_request_headers)
-		qiwi_response = AioBill(qiwi_raw_response, self)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	async def reject(self, bill_id: typing.Union[str, int]) -> AioBill:
+	async def reject(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
 		"""
 		Закрывает счет на оплату.
 
 		:param bill_id: идентификатор заказа/счета в вашей системе
-		:type bill_id: ``str`` or ``int``
+		:type bill_id: ``str`` or ``int`` or Bill
 		:return: Объект счета при успешном выполнении
-		:rtype: AioBill
+		:rtype: Bill
 		"""
+		if type(bill_id) is Bill:
+			bill_id = bill_id.bill_id
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
 		}
 		qiwi_raw_response = await self.client.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
 										   headers=qiwi_request_headers)
-		qiwi_response = AioBill(qiwi_raw_response, self)
+		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response

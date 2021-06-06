@@ -109,7 +109,7 @@ class QiwiP2P:
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def check(self, bill_id: typing.Union[str, int]) -> Bill:
+	def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
 		"""
 		Проверяет статус выставленного счета.
 
@@ -118,6 +118,8 @@ class QiwiP2P:
 		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
+		if type(bill_id) is Bill:
+			bill_id = bill_id.bill_id
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
