@@ -56,4 +56,4 @@ jobs:
           context: .
           file: ./p2proxy/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: whiteapfel/pyqiwip2p:p2proxy
+          tags: ghcr.io/whiteapfel/pyqiwip2p:p2proxy
