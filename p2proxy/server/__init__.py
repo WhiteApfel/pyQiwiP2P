@@ -1,0 +1,1 @@
+from server.proxy import ref_redirect
