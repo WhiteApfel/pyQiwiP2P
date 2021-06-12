@@ -55,3 +55,4 @@ jobs:
         with:
           context: ./p2proxy/
           push: ${{ github.event_name != 'pull_request' }}
+          tags: whiteapfel/p2proxy:latest
