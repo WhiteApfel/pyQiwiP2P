@@ -2,5 +2,5 @@ FROM python:slim
 MAINTAINER WhiteApfel 'white@pfel.ru'
 WORKDIR /app
 COPY . .
-RUN python3 -m pip install -r p2peoxy/requirements.txt
+RUN python3 -m pip install -r p2proxy/requirements.txt
 CMD ["python", "p2proxy/start.py"]
