@@ -3,4 +3,5 @@ fastapi
 pydantic
 hypercorn
 peewee
+peewee_async
 validators
