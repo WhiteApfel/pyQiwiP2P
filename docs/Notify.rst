@@ -6,6 +6,11 @@
 
 =============================
 
+.. autoclass:: pyqiwip2p.notify.AioQiwiNotify
+   :members:
+
+=============================
+
 .. toctree::
    :maxdepth: 4
 

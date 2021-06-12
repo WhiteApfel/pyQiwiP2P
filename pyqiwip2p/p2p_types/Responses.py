@@ -1,13 +1,10 @@
 from pyqiwip2p.p2p_types.Errors import QiwiError
-from requests import Response
+from httpx._models import Response
 import typing
 import json
 import time
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
-
-
-# from pyqiwip2p import QiwiP2P
 
 
 class Bill:
@@ -53,11 +50,11 @@ class Bill:
 	:type bill_history: list
 	"""
 
-	def __init__(self, response: typing.Union[Response, dict], qiwi_p2p=None):
+	def __init__(self, response: typing.Union[Response, dict]):
 		self.r_json = response if type(response) is Response else response
 		try:
 			self.r_json = self.r_json.json()
-		except json.decoder.JSONDecodeError as e:
+		except json.decoder.JSONDecodeError:
 			fn = f"QiwiCrash_{int(time.time())}.html"
 			with open(fn, "w+") as crash:
 				crash.write(self.r_json.text)
@@ -80,47 +77,3 @@ class Bill:
 				json_data=self.r_json["customer"]) if "customer" in self.r_json else None
 			self.fields: dict = self.r_json["customFields"] if "customFields" in self.r_json else None
 			self.json = self.r_json
-		self.__p2p = qiwi_p2p
-		self.bill_history = [self]
-
-	@property
-	def actual(self):
-		"""
-		Актуальная информация о счёте, получаемая прямо при вызове.
-		Осторожно, каждое обращение к Bill.actual производит обращение к API QiwiP2P.
-		Если нет необходимости в постоянном обновлении данных, то рекомендуется воспользоваться методом Bill.update_info().
-
-		В историю Bill.bill_history будет добавлен актуальный Bill. Зачем? Не знаю, пусть будет. Может кому-то пригодится.
-
-		:return: Объект счета с обновленной информацией
-		:rtype: Bill
-		"""
-		if self.__p2p :
-			actual = self.get_actual()
-			actual.bill_history = self.bill_history
-			actual.bill_history.append(actual)
-			self.bill_history.append(actual)
-			return actual
-
-	def get_actual(self):
-		"""
-		Возвращает новый экземпляр Bill с актуальной информацией.
-
-		:return: Объект счета с обновленной информацией
-		:rtype: Bill
-		"""
-		if self.__p2p:
-			return self.__p2p.check(self.bill_id)
-
-	def update_info(self):
-		"""
-		Изменяет текущий экземпляр Bill, устанавливая актуальную информацию.
-
-		:return: Объект счета с обновленной информацией
-		:rtype: Bill
-		"""
-		actual = self.get_actual()
-		actual.bill_history = self.bill_history
-		actual.bill_history.append(actual)
-		self.__dict__ = actual.__dict__
-		return self

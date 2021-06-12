@@ -3,7 +3,7 @@ import time
 import random
 import logging
 import httpx
-from netaddr import CIDR, IP
+from ipaddress import IPv4Network, IPv4Address
 
 from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiError
@@ -11,12 +11,12 @@ from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
 
 logger = logging.getLogger(__name__)
-requests = httpx.Client()
+requests = httpx.AsyncClient()
 
 
-class QiwiP2P:
+class AioQiwiP2P:
 	"""
-	Основной инструмент-клиент для взаимодействия с API QiwiP2P
+	Асинхронный основной инструмент-клиент для взаимодействия с API QiwiP2P
 
 	**Аргументы и атрибуты**
 
@@ -24,7 +24,7 @@ class QiwiP2P:
 	:type auth_key: ``str``
 	:param default_amount: значение суммы счета по умолчанию для новых счетов.
 	:type default_amount: ``int`` or ``float``, optional
-	:param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB*
+	:param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB* и *KZT*
 	:type currency: ``str``, optional
 	"""
 
@@ -32,19 +32,43 @@ class QiwiP2P:
 		self.auth_key = auth_key
 		self.default_amount = default_amount
 		self.is_async = False
+		self.client = httpx.AsyncClient()
 		if currency in ["RUB", "KZT"]:
 			self.currency = currency
 		else:
 			raise ValueError('Currency must be "RUB" or "KZT"')
 
+	async def __aenter__(self):
+		return self
+
+	async def __aexit__(self, *args):
+		return await self.client.close()
+
+	def run(self, coroutine):
+		loop = asyncio.get_event_loop()
+		run = loop.run_until_complete
+		if coroutine:
+			run(coroutine)
+
 	@staticmethod
 	def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
+		"""
+		Вы просили, мы сделали. Теперь проверить IP можнно одной простой функцией. Причём не обязательно
+		инициализировать объект, так как это статичный метод.
+
+		:param ip: ip адрес, с которого пришёл запрос
+		:type ip: ``str``
+		:param qiwi_ips: список разрешённых подсетей
+		:type qiwi_ips: ``list`` or ``tuple``, optional
+		:return: Принадлежность IP адресам Qiwi
+		:rtype: ``bool``
+		"""
 		if qiwi_ips is None:
 			qiwi_ips = ["79.142.16.0/20", "195.189.100.0/22", "91.232.230.0/23", "91.213.51.0/24"]
-		ip = IP(ip)
-		return any([ip in CIDR(net) for net in qiwi_ips])
+		ip = IPv4Address(ip)
+		return any([ip in IPv4Network(net) for net in qiwi_ips])
 
-	def bill(self,
+	async def bill(self,
 			 bill_id: typing.Union[str, int] = None,
 			 amount: typing.Union[int, float] = None,
 			 currency: str = None,
@@ -104,17 +128,17 @@ class QiwiP2P:
 
 		logger.info(qiwi_request_data)
 
-		qiwi_raw_response = requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+		qiwi_raw_response = await self.client.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  json=qiwi_request_data, headers=qiwi_request_headers)
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
+	async def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
 		"""
 		Проверяет статус выставленного счета.
 
 		:param bill_id: идентификатор заказа/счета в вашей системе
-		:type bill_id: ``str`` or ``int``
+		:type bill_id: ``str`` or ``int`` or Bill
 		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
@@ -125,25 +149,27 @@ class QiwiP2P:
 			"Authorization": f"Bearer {self.auth_key}"
 		}
 
-		qiwi_raw_response = requests.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
+		qiwi_raw_response = await self.client.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
 										  headers=qiwi_request_headers)
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
 
-	def reject(self, bill_id: typing.Union[str, int]) -> Bill:
+	async def reject(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
 		"""
 		Закрывает счет на оплату.
 
 		:param bill_id: идентификатор заказа/счета в вашей системе
-		:type bill_id: ``str`` or ``int``
+		:type bill_id: ``str`` or ``int`` or Bill
 		:return: Объект счета при успешном выполнении
 		:rtype: Bill
 		"""
+		if type(bill_id) is Bill:
+			bill_id = bill_id.bill_id
 		qiwi_request_headers = {
 			"Content-Type": "application/json",
 			"Authorization": f"Bearer {self.auth_key}"
 		}
-		qiwi_raw_response = requests.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
+		qiwi_raw_response = await self.client.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
 										   headers=qiwi_request_headers)
 		qiwi_response = Bill(qiwi_raw_response, self)
 		return qiwi_response
