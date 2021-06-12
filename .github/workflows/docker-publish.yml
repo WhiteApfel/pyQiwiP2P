@@ -54,5 +54,6 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
+          dockerfile: ./p2proxy/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: whiteapfel/p2proxy:latest
