@@ -1,6 +1,6 @@
 FROM python:slim
 MAINTAINER WhiteApfel 'white@pfel.ru'
 WORKDIR /app
-COPY p2proxy/ .
+COPY . .
 RUN python3 -m pip install -r requirements.txt
-CMD ["python", "start.py"]
+CMD ["python", "p2proxy/start.py"]
