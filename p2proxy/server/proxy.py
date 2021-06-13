@@ -39,3 +39,21 @@ async def ref_redirect_qiwi(bill_uid: str):
             status_code=308,
         )
     return "Oooops"
+
+
+@app.get("/bill/{bill_uid}")
+async def ref_redirect_qiwi(bill_uid: str):
+    if validators.uuid(bill_uid):
+        # return RedirectResponse(
+        #     url=f"https://oplata.qiwi.com/form?invoiceUid={bill_uid}",
+        #     status_code=308,
+        # )
+        return HTMLResponse(
+            f"""
+                <script>
+                    location.href = "https://oplata.qiwi.com/form?invoiceUid={bill_uid}"
+                </script>
+            """
+        )
+    return "Oooops"
+
