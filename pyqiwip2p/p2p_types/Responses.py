@@ -50,7 +50,7 @@ class Bill:
 	:type bill_history: list
 	"""
 
-	def __init__(self, response: typing.Union[Response, dict]):
+	def __init__(self, response: typing.Union[Response, dict], alt="qp2p.0708.su"):
 		self.r_json = response if type(response) is Response else response
 		try:
 			self.r_json = self.r_json.json()
@@ -76,4 +76,5 @@ class Bill:
 			self.customer: QiwiCustomer = QiwiCustomer(
 				json_data=self.r_json["customer"]) if "customer" in self.r_json else None
 			self.fields: dict = self.r_json["customFields"] if "customFields" in self.r_json else None
-			self.json = self.r_json
+			self.json: dict = self.r_json
+			self.alt_url: str = f"https://{alt}/bill/{self.pay_url[-36:]}"
