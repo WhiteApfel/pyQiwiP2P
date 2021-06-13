@@ -46,8 +46,8 @@ class Bill:
 	:type fields: ``dict``
 	:param json: исходный словарь Qiwi на случай, если они что-то обновят или у меня что-то не работает
 	:type json: ``dict``
-	:param bill_history: будет сохраняться история объектов Bill при обновлении информации о счете через метод update
-	:type bill_history: list
+	:param alt_url: ссылка с проксированием через мой сервер для установления заголовка referer
+	:type alt_url: ``str``
 	"""
 
 	def __init__(self, response: typing.Union[Response, dict], alt="qp2p.0708.su"):

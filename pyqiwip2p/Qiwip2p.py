@@ -26,6 +26,8 @@ class QiwiP2P:
     :type default_amount: ``int`` or ``float``, optional
     :param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB*
     :type currency: ``str``, optional
+    :param alt: альтернативный домен для проксирующей ссылки. По-умолчанию ``qp2p.0708.su``
+    :type alt: ``str``, optional
     """
 
     def __init__(self, auth_key: str, default_amount: int = 100, currency: str = "RUB", alt: str = "qp2p.0708.su"):
