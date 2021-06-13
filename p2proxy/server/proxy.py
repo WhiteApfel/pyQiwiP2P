@@ -42,7 +42,7 @@ async def ref_redirect_qiwi(bill_uid: str):
 
 
 @app.get("/bill/{bill_uid}")
-async def ref_redirect_qiwi(bill_uid: str):
+async def ref_redirect_qiwi_bill(bill_uid: str):
     if validators.uuid(bill_uid):
         # return RedirectResponse(
         #     url=f"https://oplata.qiwi.com/form?invoiceUid={bill_uid}",
