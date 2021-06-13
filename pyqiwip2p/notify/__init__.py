@@ -4,6 +4,7 @@ import json
 import hmac
 import hashlib
 from pyqiwip2p.p2p_types.Responses import Bill
+from pyqiwip2p.notify.async_client import AioQiwiNotify
 
 
 class QiwiNotify:
