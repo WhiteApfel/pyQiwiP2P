@@ -57,3 +57,12 @@ async def ref_redirect_qiwi_bill(bill_uid: str):
         )
     return "Oooops"
 
+
+@app.get("/")
+async def index(bill_uid: str):
+    if validators.uuid(bill_uid):
+        return RedirectResponse(
+            url=f"https://github.com/WhiteApfel/pyQiwiP2P",
+            status_code=307,
+        )
+    return "Oooops"
