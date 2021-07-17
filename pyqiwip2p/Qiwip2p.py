@@ -1,7 +1,7 @@
 import typing
 import time
 import random
-import logging
+from loguru import logger
 import httpx
 from ipaddress import IPv4Network, IPv4Address
 
@@ -10,7 +10,7 @@ from pyqiwip2p.p2p_types import QiwiError
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
 
-logger = logging.getLogger(__name__)
+logger.disable("pyqiwip2p")
 requests = httpx.Client()
 
 
@@ -116,7 +116,6 @@ class QiwiP2P:
             "customFields": fields if fields else {}
         }
 
-        logger.info(qiwi_request_data)
 
         qiwi_raw_response = requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
                                          json=qiwi_request_data, headers=qiwi_request_headers)
