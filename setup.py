@@ -7,16 +7,21 @@ def read(filename):
 		return file.read()
 
 
+def requirements():
+	with open('requirements.txt', 'r') as req:
+		return [r for r in req.read().split("\n") if r]
+
+
 setup(
 	name='pyQiwiP2P',
-	version='2.0a5',
+	version='2.0a6',
 	packages=['pyqiwip2p', 'pyqiwip2p.p2p_types', 'pyqiwip2p.notify'],
 	url='https://github.com/WhiteApfel/pyQiwiP2P',
 	license='Mozilla Public License 2.0',
 	author='WhiteApfel',
 	author_email='white@pfel.ru',
 	description='pyQiwiP2P',
-	install_requires=['cherrypy', 'phonenumbers', 'email_validator', 'httpx', 'ipaddress', 'hypercorn', 'starlette'],
+	install_requires=requirements(),
 	project_urls={
 		"Документальное чтиво": "https://pyqiwip2p.readthedocs.io/ru/latest/",
 		"Донатик": "https://pfel.cc/donate",
