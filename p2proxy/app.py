@@ -1,3 +1,3 @@
-from fastapi import FastAPI
+from starlette.applications import Starlette
 
-app = FastAPI()
+app = Starlette()

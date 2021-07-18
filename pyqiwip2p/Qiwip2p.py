@@ -56,7 +56,9 @@ class QiwiP2P:
         if qiwi_ips is None:
             qiwi_ips = ["79.142.16.0/20", "195.189.100.0/22", "91.232.230.0/23", "91.213.51.0/24"]
         ip = IPv4Address(ip)
-        return any([ip in IPv4Network(net) for net in qiwi_ips])
+        is_qiwi = any([ip in IPv4Network(net) for net in qiwi_ips])
+        logger.log("debug" if is_qiwi else 'warning', f"is_qiwi_ip: {ip} {'not ' if not is_qiwi else ''} in {qiwi_ips}")
+        return is_qiwi
 
     def bill(self,
              bill_id: typing.Union[str, int] = None,
@@ -89,16 +91,22 @@ class QiwiP2P:
         :return: Объект счета при успешном выполнении
         :rtype: Bill
         """
-        bill_id = bill_id if bill_id else f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-{int(random.random() * 1000)}"
-        amount = amount if amount else self.default_amount
-        expiration = QiwiDatetime(moment=expiration).qiwi if expiration else QiwiDatetime(lifetime=lifetime).qiwi
-        amount = str(round(float(amount), 2)) if len(str(float(amount)).split(".")[1]) > 1 else str(
+        logger.info(f"bill args: bill_id: {bill_id}, amount: {amount}, currency: {currency}, expiration: {expiration}, "
+                    f"lifetime: {lifetime}, customer: {customer}, fields: {fields}")
+        bill_id = bill_id or f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-{int(random.random() * 1000)}"
+
+        amount = amount or self.default_amount
+        amount_round = str(round(float(amount), 2))
+        amount = amount_round if len(str(float(amount)).split(".")[1]) > 1 else str(
             round(float(amount), 2)) + "0"
-        if currency:
-            if not (currency in ["RUB", "KZT"]):
-                raise ValueError('Currency must be "RUB" or "KZT"')
+
+        expiration = QiwiDatetime(moment=expiration).qiwi or QiwiDatetime(lifetime=lifetime).qiwi
+
+        if currency and currency not in ["RUB", "KZT"]:
+            raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
         else:
             currency = self.currency
+
         qiwi_request_headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -113,13 +121,14 @@ class QiwiP2P:
             "expirationDateTime": expiration,
             "customer": customer.dict if type(customer) is QiwiCustomer else QiwiCustomer(
                 json_data=customer).dict if customer else {},
-            "customFields": fields if fields else {}
+            "customFields": fields or dict()
         }
-
-
+        logger.info(f"bill request: bill_id: {bill_id}, amount: {amount}, currency: {currency}, expiration: "
+                    f"{expiration}, lifetime: {lifetime}, customer: {customer}, fields: {fields}")
         qiwi_raw_response = requests.put(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
                                          json=qiwi_request_data, headers=qiwi_request_headers)
         qiwi_response = Bill(qiwi_raw_response, self.alt)
+        logger.info(f"bill created: pay_url: {qiwi_response.pay_url}")
         return qiwi_response
 
     def check(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
@@ -131,6 +140,7 @@ class QiwiP2P:
         :return: Объект счета при успешном выполнении
         :rtype: Bill
         """
+        logger.info(f"check bill: bill_id: {bill_id}")
         if type(bill_id) is Bill:
             bill_id = bill_id.bill_id
         qiwi_request_headers = {
@@ -139,11 +149,12 @@ class QiwiP2P:
         }
 
         qiwi_raw_response = requests.get(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
-                                         headers=qiwi_request_headers)
+                                                  headers=qiwi_request_headers)
         qiwi_response = Bill(qiwi_raw_response, self.alt)
+        logger.info(f"checked bill: bill_id: {bill_id}, status: {qiwi_response.status}")
         return qiwi_response
 
-    def reject(self, bill_id: typing.Union[str, int]) -> Bill:
+    def reject(self, bill_id: typing.Union[str, int, Bill]) -> Bill:
         """
         Закрывает счет на оплату.
 
@@ -152,11 +163,15 @@ class QiwiP2P:
         :return: Объект счета при успешном выполнении
         :rtype: Bill
         """
+        logger.info(f"reject bill: bill_id: {bill_id}")
+        if type(bill_id) is Bill:
+            bill_id = bill_id.bill_id
         qiwi_request_headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.auth_key}"
         }
         qiwi_raw_response = requests.post(f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
-                                          headers=qiwi_request_headers)
+                                                   headers=qiwi_request_headers)
         qiwi_response = Bill(qiwi_raw_response, self.alt)
+        logger.info(f"rejected bill: bill_id: {bill_id}, status: {qiwi_response.status}")
         return qiwi_response

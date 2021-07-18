@@ -5,6 +5,8 @@ import validators
 import os
 
 
+# Это не работает, Женя просто попутал что-то...
+#
 # @app.get("/ref/{referer_uid}/bill/{bill_uid}")
 # async def ref_redirect(referer_uid: str, bill_uid: str):
 #     if validators.uuid(bill_uid):
@@ -21,27 +23,27 @@ import os
 #     return "ok"
 
 
-@app.get("/{bill_uid}")
-async def ref_redirect(bill_uid: str):
+@app.route("/{bill_uid}", "GET")
+async def ref_redirect_vk(bill_uid: str):
     if validators.uuid(bill_uid):
         return RedirectResponse(
             url=f"https://vk.com/away.php?to=https://{os.environ.get('QP2P_DOMAIN', 'qp2p.0708.su')}/second/{bill_uid}",
             status_code=308,
         )
-    return "Oooops"
+    return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.get("/second/{bill_uid}")
+@app.route("/second/{bill_uid}", "GET")
 async def ref_redirect_qiwi(bill_uid: str):
     if validators.uuid(bill_uid):
         return RedirectResponse(
             url=f"https://oplata.qiwi.com/form?invoiceUid={bill_uid}",
             status_code=308,
         )
-    return "Oooops"
+    return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.get("/bill/{bill_uid}")
+@app.route("/bill/{bill_uid}", "GET")
 async def ref_redirect_qiwi_bill(bill_uid: str):
     if validators.uuid(bill_uid):
         # return RedirectResponse(
@@ -55,14 +57,12 @@ async def ref_redirect_qiwi_bill(bill_uid: str):
                 </script>
             """
         )
-    return "Oooops"
+    return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.get("/")
-async def index(bill_uid: str):
-    if validators.uuid(bill_uid):
-        return RedirectResponse(
-            url=f"https://github.com/WhiteApfel/pyQiwiP2P",
-            status_code=307,
-        )
-    return "Oooops"
+@app.get("/", "GET")
+async def index():
+    return RedirectResponse(
+        url=f"https://github.com/WhiteApfel/pyQiwiP2P",
+        status_code=307,
+    )
