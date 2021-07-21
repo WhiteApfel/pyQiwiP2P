@@ -37,12 +37,9 @@ class QiwiDatetime:
 					if re.match(self._exp_regex, moment):
 						self.set_from_qiwi(moment)
 					else:
-						raise TypeError("The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс.мсс+\-чч:мм'")
+						raise TypeError(r"The string does not match the format 'ГГГГ-ММ-ДДTчч:мм:сс.мсс+\-чч:мм'")
 				if type(moment) is int or type(moment) is float:
-					if moment < time.time():
-						raise ValueError("Time has passed")
-					else:
-						self.set_from_timestamp(moment)
+					self.set_from_timestamp(moment)
 				if type(moment) is datetime:
 					self.set_from_datetime(moment)
 			else:

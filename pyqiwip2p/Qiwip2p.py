@@ -100,7 +100,7 @@ class QiwiP2P:
         amount = amount_round if len(str(float(amount)).split(".")[1]) > 1 else str(
             round(float(amount), 2)) + "0"
 
-        expiration = QiwiDatetime(moment=expiration).qiwi or QiwiDatetime(lifetime=lifetime).qiwi
+        expiration = QiwiDatetime(moment=expiration).qiwi if expiration else QiwiDatetime(lifetime=lifetime).qiwi
 
         if currency and currency not in ["RUB", "KZT"]:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
