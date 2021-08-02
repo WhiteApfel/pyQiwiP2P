@@ -5,6 +5,7 @@ import json
 import time
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
+from response_report import Reporter
 
 
 class Bill:
@@ -51,15 +52,15 @@ class Bill:
 	"""
 
 	def __init__(self, response: typing.Union[Response, dict], alt="qp2p.0708.su"):
-		self.r_json = response if type(response) is Response else response
-		try:
-			self.r_json = self.r_json.json()
-		except json.decoder.JSONDecodeError:
-			fn = f"QiwiCrash_{int(time.time())}.html"
-			with open(fn, "w+") as crash:
-				crash.write(self.r_json.text)
-			raise ValueError(
-				f"Qiwi response is not JSON. This is Qiwi-side bug. Please try again later. Qiwi response page - {fn}")
+		self.r_json = response
+		if type(self.r_json) is Response:
+			try:
+				self.r_json = self.r_json.json()
+			except json.decoder.JSONDecodeError:
+				fn = f"QiwiCrash_{int(time.time())}.html"
+				Reporter(response).save(fn)
+				raise ValueError(
+					f"Qiwi response is not JSON. This is Qiwi-side bug. Please try again later. Qiwi response - {fn}")
 		if "errorCode" in self.r_json:
 			raise QiwiError(self.r_json)
 		else:
