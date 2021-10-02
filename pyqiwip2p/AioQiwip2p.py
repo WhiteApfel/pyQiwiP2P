@@ -46,7 +46,7 @@ class AioQiwiP2P:
         return self
 
     async def __aexit__(self, *args):
-        return await self.client.close()
+        return await self.client.aclose()
 
     def run(self, coroutine):
         loop = asyncio.get_event_loop()

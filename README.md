@@ -104,7 +104,7 @@ p2p = AioQiwiP2P(auth_key=QIWI_PRIV_KEY)
 p2p = AioQiwiP2P(auth_key=QIWI_PRIV_KEY, default_amount=148)
 
 async def main():
-    with p2p:
+    async with p2p:
         # Выставим счет на сумму 228 рублей который будет работать 45 минут
         new_bill = await p2p.bill(bill_id=212332030, amount=228, lifetime=45)
         
