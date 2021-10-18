@@ -1,8 +1,11 @@
 # from models import Referer, RequestReferer, P2ProxyError, ResponseReferer, RequestGetByUid, ResponseReferers
-from app import app
 from starlette.responses import RedirectResponse, HTMLResponse
 import validators
 import os
+
+from starlette.routing import Router
+
+router = Router()
 
 
 # Это не работает, Женя просто попутал что-то...
@@ -23,7 +26,7 @@ import os
 #     return "ok"
 
 
-@app.route("/{bill_uid}", "GET")
+@router.route("/{bill_uid}", "GET")
 async def ref_redirect_vk(bill_uid: str):
     if validators.uuid(bill_uid):
         return RedirectResponse(
@@ -33,7 +36,7 @@ async def ref_redirect_vk(bill_uid: str):
     return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.route("/second/{bill_uid}", "GET")
+@router.route("/second/{bill_uid}", "GET")
 async def ref_redirect_qiwi(bill_uid: str):
     if validators.uuid(bill_uid):
         return RedirectResponse(
@@ -43,7 +46,7 @@ async def ref_redirect_qiwi(bill_uid: str):
     return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.route("/bill/{bill_uid}", "GET")
+@router.route("/bill/{bill_uid}", "GET")
 async def ref_redirect_qiwi_bill(bill_uid: str):
     if validators.uuid(bill_uid):
         # return RedirectResponse(
@@ -60,7 +63,7 @@ async def ref_redirect_qiwi_bill(bill_uid: str):
     return HTMLResponse("<body><h1>Invalid bill_id</h1></body>")
 
 
-@app.get("/", "GET")
+@router.route("/", "GET")
 async def index():
     return RedirectResponse(
         url=f"https://github.com/WhiteApfel/pyQiwiP2P",
