@@ -1,10 +1,8 @@
 name: Publish package to PyPI
 
 on:
-  push:
-    branches: [ master ]
   release:
-    types: [ released ]
+    types: [ released, prereleased ]
 
 jobs:
   build-n-publish:
@@ -20,9 +18,11 @@ jobs:
       - name: Install pypa/build
         run: >-
           python3 -m pip install --user --upgrade setuptools wheel
+
       - name: Build a binary wheel and a source tarball
         run: >-
           python3 setup.py sdist bdist_wheel
+
       - name: Publish package to PyPI
         if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
