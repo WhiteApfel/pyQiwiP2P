@@ -36,8 +36,7 @@ class RequestReferer(BaseModel):
     def referer_must_be_url(cls, url):
         if validators.url(url):
             return url
-        else:
-            raise ValueError("referer must be url")
+        raise ValueError("referer must be url")
 
 
 class RequestGetByUid(BaseModel):
@@ -47,8 +46,7 @@ class RequestGetByUid(BaseModel):
     def referer_must_be_url(cls, uid):
         if validators.uuid(uid):
             return uid
-        else:
-            raise ValueError("uid must be in UUID-like format")
+        raise ValueError("uid must be in UUID-like format")
 
 
 class ResponseReferer(BaseModel):
