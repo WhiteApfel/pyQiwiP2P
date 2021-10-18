@@ -27,10 +27,7 @@ class QiwiNotify:
 
 	def _check_valid(self, bill: Bill, sha256: str):
 		invoice_parameters = f"{bill.currency} | {bill.amount} | {bill.bill_id} | {bill.site_id} | {bill.status}"
-		if hmac.new(self.auth_key.encode(), invoice_parameters.encode(), hashlib.sha256).hexdigest() == sha256:
-			return True
-		else:
-			return False
+		return hmac.new(self.auth_key.encode(), invoice_parameters.encode(), hashlib.sha256).hexdigest() == sha256
 
 	def _parse(self, response, sha256):
 		bill = Bill(response)
