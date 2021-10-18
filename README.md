@@ -1,7 +1,10 @@
 # pyQiwiP2P
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_shield)
 
-### Предисловие
+## Предисловие
+
+### О библиотеке
+
 Штучка для удобной работы с кивишной апишкой платежей
 
 Есть типа [документация](https://pyqiwip2p.readthedocs.io/ru/latest/), но в ней есть и косячки, поэтому, 
@@ -42,6 +45,7 @@
 
 
 ---
+## А как пользоваться
 
 ### Что есть?
 Есть сам класс QiwiP2P, который обладает тремя инструментами:
