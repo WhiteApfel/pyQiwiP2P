@@ -41,7 +41,7 @@
 
  * Исходники: [Github](https://github.com/WhiteApfel/pyQiwiP2P/tree/master/p2proxy)
  * Образ контейнера: ``ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
- * Запуск: ``docker run -p 3600:3600 -d ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
+ * Запуск: ``docker run -p 3600:3600 -e QP2P_DOMAIN='example.com' -d ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
  * Свой домен в клиенте: ``p2p = AioQiwiP2P(PrivKey, alt="example.com")``
 
 
