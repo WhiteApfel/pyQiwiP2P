@@ -1,3 +1,11 @@
+from uuid import uuid4
+
+from fastapi import Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+
+from app import app
 from models import (
     Referer,
     RequestReferer,
@@ -6,12 +14,6 @@ from models import (
     RequestGetByUid,
     ResponseReferers,
 )
-from app import app
-from uuid import uuid4, UUID
-from fastapi import Request, status
-from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
 
 
 @app.post("/api/v1/add_referer", response_model=ResponseReferer)

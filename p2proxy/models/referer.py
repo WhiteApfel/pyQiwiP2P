@@ -1,12 +1,12 @@
-from peewee import *
-import peewee_async
-from pydantic import BaseModel, validator
-import validators
-from typing import Optional, List
-from datetime import datetime
-from uuid import UUID
 import os
+from datetime import datetime
+from typing import Optional, List
+from uuid import UUID
 
+import peewee_async
+import validators
+from peewee import *
+from pydantic import BaseModel, validator
 
 # db = SqliteDatabase('db.sqlite')
 db = peewee_async.PostgresqlDatabase(

@@ -1,8 +1,8 @@
 # from models import Referer, RequestReferer, P2ProxyError, ResponseReferer, RequestGetByUid, ResponseReferers
-from starlette.responses import RedirectResponse, HTMLResponse
-import validators
 import os
 
+import validators
+from starlette.responses import RedirectResponse, HTMLResponse
 from starlette.routing import Router
 
 router = Router()

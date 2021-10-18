@@ -1,9 +1,10 @@
-from dotenv import load_dotenv
-import os
-from starlette.applications import Starlette
 import asyncio
+import os
+
+from dotenv import load_dotenv
 from hypercorn import Config
 from hypercorn.asyncio import serve
+from starlette.applications import Starlette
 
 dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
 if os.path.exists(dotenv_path):
