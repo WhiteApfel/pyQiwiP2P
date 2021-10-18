@@ -63,19 +63,19 @@ class Bill:
 					f"Qiwi response is not JSON. This is Qiwi-side bug. Please try again later. Qiwi response - {fn}")
 		if "errorCode" in self.r_json:
 			raise QiwiError(self.r_json)
-		else:
-			self.site_id: int = self.r_json["siteId"]
-			self.bill_id: int = self.r_json["billId"]
-			self.amount: float = self.r_json["amount"]["value"]
-			self.currency: str = self.r_json["amount"]["currency"]
-			self.status: str = self.r_json["status"]["value"]
-			self.status_changed: str = self.r_json["status"]["changedDateTime"]
-			self.creation: str = self.r_json["creationDateTime"]
-			self.expiration: str = self.r_json["expirationDateTime"]
-			self.pay_url: str = self.r_json["payUrl"]
-			self.comment: str = self.r_json["comment"] if "comment" in self.r_json else None
-			self.customer: QiwiCustomer = QiwiCustomer(
-				json_data=self.r_json["customer"]) if "customer" in self.r_json else None
-			self.fields: dict = self.r_json["customFields"] if "customFields" in self.r_json else None
-			self.json: dict = self.r_json
-			self.alt_url: str = f"https://{alt}/bill/{self.pay_url[-36:]}"
+
+		self.site_id: int = self.r_json["siteId"]
+		self.bill_id: int = self.r_json["billId"]
+		self.amount: float = self.r_json["amount"]["value"]
+		self.currency: str = self.r_json["amount"]["currency"]
+		self.status: str = self.r_json["status"]["value"]
+		self.status_changed: str = self.r_json["status"]["changedDateTime"]
+		self.creation: str = self.r_json["creationDateTime"]
+		self.expiration: str = self.r_json["expirationDateTime"]
+		self.pay_url: str = self.r_json["payUrl"]
+		self.comment: str = self.r_json["comment"] if "comment" in self.r_json else None
+		self.customer: QiwiCustomer = QiwiCustomer(
+			json_data=self.r_json["customer"]) if "customer" in self.r_json else None
+		self.fields: dict = self.r_json["customFields"] if "customFields" in self.r_json else None
+		self.json: dict = self.r_json
+		self.alt_url: str = f"https://{alt}/bill/{self.pay_url[-36:]}"

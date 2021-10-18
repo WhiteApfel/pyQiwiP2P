@@ -36,10 +36,9 @@ class AioQiwiP2P:
         self.is_async = False
         self.client = httpx.AsyncClient()
         self.alt = alt
-        if currency in ["RUB", "KZT"]:
-            self.currency = currency
-        else:
+        if currency not in ["RUB", "KZT"]:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
+        self.currency = currency
         logger.info(f"init: default_amount: {default_amount}, currency: {currency}, alt: {alt}")
 
     async def __aenter__(self):
@@ -118,8 +117,7 @@ class AioQiwiP2P:
 
         if currency and currency not in ["RUB", "KZT"]:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
-        else:
-            currency = self.currency
+        currency = self.currency
 
         qiwi_request_headers = {
             "Accept": "application/json",

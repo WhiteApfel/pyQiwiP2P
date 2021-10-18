@@ -50,8 +50,7 @@ class AioQiwiNotify:
 			loop = asyncio.get_event_loop()
 			loop.create_task(self._check(bill))
 			return Response(status_code=status.HTTP_200_OK)
-		else:
-			return Response(status_code=status.HTTP_401_UNAUTHORIZED)
+		return Response(status_code=status.HTTP_401_UNAUTHORIZED)
 
 	async def _check(self, bill):
 		for handler in self.handlers:

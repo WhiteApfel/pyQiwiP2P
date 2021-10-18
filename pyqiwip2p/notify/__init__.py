@@ -66,8 +66,7 @@ class QiwiNotify:
 					json_string = cherrypy.request.body.read().decode("utf-8")
 					qiwi._parse(json.loads(json_string), cherrypy.request.headers["X-Api-Signature-SHA256"])
 					return ''
-				else:
-					raise cherrypy.HTTPError(403)
+				raise cherrypy.HTTPError(403)
 
 		cherrypy.config.update({'server.socket_port': port})
 		t = threading.Thread(target=lambda ws: cherrypy.quickstart(ws()), args=(WebhookServer,))

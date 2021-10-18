@@ -35,10 +35,9 @@ class QiwiP2P:
         self.default_amount = default_amount
         self.is_async = False
         self.alt = alt
-        if currency in ["RUB", "KZT"]:
-            self.currency = currency
-        else:
+        if currency not in ["RUB", "KZT"]:
             raise ValueError('Currency must be "RUB" or "KZT"')
+        self.currency = currency
 
     @staticmethod
     def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
