@@ -1,11 +1,13 @@
-from pyqiwip2p.p2p_types.Errors import QiwiError
-from httpx._models import Response
-import typing
 import json
 import time
+import typing
+
+from httpx._models import Response
+from response_report import Reporter
+
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
-from response_report import Reporter
+from pyqiwip2p.p2p_types.Errors import QiwiError
 
 
 class Bill:
