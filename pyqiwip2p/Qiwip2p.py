@@ -132,8 +132,7 @@ class QiwiP2P:
 
         if currency and currency not in ["RUB", "KZT"]:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
-        else:
-            currency = self.currency
+        currency = self.currency
 
         qiwi_request_headers = {
             "Accept": "application/json",
