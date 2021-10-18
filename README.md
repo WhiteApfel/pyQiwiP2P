@@ -23,11 +23,11 @@
 
 **Это случается при открытии ссылки:**
 
-* из мессенджера
-* из смс
-* из письма
-* из адресной строки
-* из браузера с повышенным режимом приватности или расширениями для приватного просмотра
+ * из мессенджера
+ * из смс
+ * из письма
+ * из адресной строки
+ * из браузера с повышенным режимом приватности или расширениями для приватного просмотра
 
 Для обхода всех проблем, кроме последней (она не решается), к объекту
 ``Bill`` был добавлен атрибут ``Bill.alt_url``, который предоставляет ссылку
@@ -37,10 +37,10 @@
 Страница предоставлена мною, но её можно поднять на своём сервере
 с помощью docker-контейнера.
 
-* Исходники: [Github](https://github.com/WhiteApfel/pyQiwiP2P/tree/master/p2proxy)
-* Образ контейнера: ``ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
-* Запуск: ``docker run -p 3600:3600 -d ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
-* Свой домен в клиенте: ``p2p = AioQiwiP2P(PrivKey, alt="example.com")``
+ * Исходники: [Github](https://github.com/WhiteApfel/pyQiwiP2P/tree/master/p2proxy)
+ * Образ контейнера: ``ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
+ * Запуск: ``docker run -p 3600:3600 -d ghcr.io/whiteapfel/pyqiwip2p:p2proxy``
+ * Свой домен в клиенте: ``p2p = AioQiwiP2P(PrivKey, alt="example.com")``
 
 
 ---
