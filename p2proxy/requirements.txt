@@ -1,7 +1,5 @@
 typing
-fastapi
+starlette
 pydantic
 hypercorn
-peewee
-peewee_async
 validators
