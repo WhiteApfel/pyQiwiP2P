@@ -232,8 +232,5 @@ server {
 **P.S. за неприходящие от Qiwi запросы ответственность не несу, как и за приходящие, кстати, тоже.
 Если запроса от Qiwi не было, то пишите им в поддержку [@qiwi_api_help_bot](https://t.me/qiwi_api_help_bot)**
 
-### Для самозанятых
-От создателя этой либы есть либа для работы с API Мой налог для выставления чеков.
-
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_large)
