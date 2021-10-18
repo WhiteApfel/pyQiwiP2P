@@ -1,7 +1,6 @@
 # pyQiwiP2P
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_shield)
 
-
 ### Предисловие
 Штучка для удобной работы с кивишной апишкой платежей
 
