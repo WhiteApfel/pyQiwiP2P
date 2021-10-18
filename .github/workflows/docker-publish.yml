@@ -1,15 +1,11 @@
-name: Docker
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+name: Build P2Proxy container
 
 on:
-  schedule:
-    - cron: '42 16 * * *'
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - 'p2proxy/**'
 
 env:
   # Use docker.io for Docker Hub if empty
