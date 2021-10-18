@@ -91,5 +91,3 @@ class QiwiDatetime:
 		:rtype: ``str`` в формате "*YYYY-MM-DDThh:mm:ss+hh:mm*"
 		"""
 		self.set_from_datetime(self.now_datetime()+timedelta(minutes=lifetime))
-
-
