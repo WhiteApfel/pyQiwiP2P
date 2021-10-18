@@ -9,9 +9,13 @@ import os
 
 
 # db = SqliteDatabase('db.sqlite')
-db = peewee_async.PostgresqlDatabase(database='qiwip2proxy',
-                                     user=os.environ.get('DB_USER'), password=os.environ.get('DB_PSSWD'),
-                                     host=os.environ.get('DB_HOST'), port=int(os.environ.get('DB_PORT')))
+db = peewee_async.PostgresqlDatabase(
+    database="qiwip2proxy",
+    user=os.environ.get("DB_USER"),
+    password=os.environ.get("DB_PSSWD"),
+    host=os.environ.get("DB_HOST"),
+    port=int(os.environ.get("DB_PORT")),
+)
 
 
 class Referer(Model):
@@ -28,7 +32,7 @@ class RequestReferer(BaseModel):
     referer: str
     is_public: Optional[bool] = False
 
-    @validator('referer')
+    @validator("referer")
     def referer_must_be_url(cls, url):
         if validators.url(url):
             return url
@@ -39,7 +43,7 @@ class RequestReferer(BaseModel):
 class RequestGetByUid(BaseModel):
     uid: str
 
-    @validator('uid')
+    @validator("uid")
     def referer_must_be_url(cls, uid):
         if validators.uuid(uid):
             return uid
