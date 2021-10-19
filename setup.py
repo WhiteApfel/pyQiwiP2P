@@ -1,3 +1,5 @@
+from os import environ
+
 from setuptools import setup
 from io import open
 
@@ -14,7 +16,7 @@ def requirements():
 
 setup(
     name="pyQiwiP2P",
-    version="2.0a12",
+    version=environ.get("TAG_VERSION").replace("v", ""),
     packages=["pyqiwip2p", "pyqiwip2p.p2p_types", "pyqiwip2p.notify"],
     url="https://github.com/WhiteApfel/pyQiwiP2P",
     license="Mozilla Public License 2.0",
