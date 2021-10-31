@@ -33,7 +33,7 @@ class Bill:
     :type currency: ``str``
     :param status: статус счета
     :type status: ``str``
-    :param status_changed: время последнего изменения счата
+    :param status_changed: время последнего изменения счёта
     :type status_changed: QiwiDatetime
     :param creation: время создания счета
     :type creation: QiwiDatetime
@@ -47,9 +47,11 @@ class Bill:
     :type customer: QiwiCustomer
     :param fields: кастомные поля Qiwi
     :type fields: ``dict``
-    :param json: исходный словарь Qiwi на случай, если они что-то обновят или у меня что-то не работает
+    :param json: исходный словарь Qiwi на случай,
+    если они что-то обновят или у меня что-то не работает
     :type json: ``dict``
-    :param alt_url: ссылка с проксированием через мой сервер для установления заголовка referer
+    :param alt_url: ссылка с проксированием через сервер
+    для установления заголовка referer
     :type alt_url: ``str``
     """
 
@@ -62,7 +64,10 @@ class Bill:
                 fn = f"QiwiCrash_{int(time.time())}.html"
                 Reporter(response).save(fn)
                 raise ValueError(
-                    f"Qiwi response is not JSON. This is Qiwi-side bug. Please try again later. Qiwi response - {fn}"
+                    f"Code: {response.status_code}. "
+                    f"Qiwi response is not JSON. This is Qiwi-side bug. "
+                    f"Please try again later or check response. "
+                    f"Qiwi response saved to{fn}"
                 )
         if "errorCode" in self.r_json:
             raise QiwiError(self.r_json)
