@@ -82,7 +82,11 @@ class QiwiP2P:
             key_decoded = json.loads(key_decoded)
             if "version" in key_decoded and "data" in key_decoded:
                 key_data = key_decoded["data"]
-                if "payin_merchant_site_uid" in key_data and "user_id" in key_data and "secret" in key_data:
+                if (
+                    "payin_merchant_site_uid" in key_data
+                    and "user_id" in key_data
+                    and "secret" in key_data
+                ):
                     if key_decoded["version"] == "P2P":
                         return True
         except json.decoder.JSONDecodeError:
