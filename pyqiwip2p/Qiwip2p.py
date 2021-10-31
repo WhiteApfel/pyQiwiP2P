@@ -1,6 +1,8 @@
+import json
 import random
 import time
 import typing
+from base64 import b64decode
 from ipaddress import IPv4Network, IPv4Address
 
 import httpx
@@ -37,6 +39,7 @@ class QiwiP2P:
         currency: str = "RUB",
         alt: str = "qp2p.0708.su",
     ):
+        self.validate_privkey(auth_key)
         self.auth_key = auth_key
         self.default_amount = default_amount
         self.is_async = False
@@ -72,6 +75,19 @@ class QiwiP2P:
             f"is_qiwi_ip: {ip} {'not ' if not is_qiwi else ''} in {qiwi_ips}",
         )
         return is_qiwi
+
+    def validate_privkey(self, privkey):
+        key_decoded = b64decode(privkey).decode()
+        try:
+            key_decoded = json.loads(key_decoded)
+            if "version" in key_decoded and "data" in key_decoded:
+                key_data = key_decoded["data"]
+                if "payin_merchant_site_uid" in key_data and "user_id" in key_data and "secret" in key_data:
+                    if key_decoded["version"] == "P2P":
+                        return True
+        except json.decoder.JSONDecodeError:
+            ...
+        raise ValueError("Invalid token")
 
     def bill(
         self,
