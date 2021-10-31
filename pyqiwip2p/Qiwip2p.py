@@ -144,7 +144,7 @@ class QiwiP2P:
         bill_id = (
             bill_id
             or f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-"
-               f"{int(random.random() * 1000)}"
+            f"{int(random.random() * 1000)}"
         )
 
         amount = amount or self.default_amount
