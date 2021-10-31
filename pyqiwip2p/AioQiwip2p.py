@@ -23,13 +23,16 @@ class AioQiwiP2P:
 
     **Аргументы и атрибуты**
 
-    :param auth_key: приватный ключ авторизации со страницы https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.
+    :param auth_key: приватный ключ авторизации со страницы
+    https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.
     :type auth_key: ``str``
     :param default_amount: значение суммы счета по умолчанию для новых счетов.
     :type default_amount: ``int`` or ``float``, optional
-    :param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB* и *KZT*
+    :param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет
+    работать только с *RUB* и *KZT*
     :type currency: ``str``, optional
-    :param alt: альтернативный домен для проксирующей ссылки. По-умолчанию ``qp2p.0708.su``
+    :param alt: альтернативный домен для проксирующей ссылки.
+    По-умолчанию ``qp2p.0708.su``
     :type alt: ``str``, optional
     """
 
@@ -85,8 +88,8 @@ class AioQiwiP2P:
     @staticmethod
     def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
         """
-        Вы просили, мы сделали. Теперь проверить IP можнно одной простой функцией. Причём не обязательно
-        инициализировать объект, так как это статичный метод.
+        Вы просили, мы сделали. Теперь проверить IP можнно одной простой функцией.
+        Причём не обязательно инициализировать объект, так как это статичный метод.
 
         :param ip: ip адрес, с которого пришёл запрос
         :type ip: ``str``
@@ -124,33 +127,41 @@ class AioQiwiP2P:
         """
         Метод для выставления счета.
 
-        :param bill_id: идентификатор заказа/счета в вашей системе. Если параметр не укзаан, генерируется строка, основанная на времени.
+        :param bill_id: идентификатор заказа/счета в вашей системе. Если параметр
+        не укзаан, генерируется строка, основанная на времени.
         :type bill_id: ``str`` or ``int``, optional
-        :param amount: сумма заказа в рублях. Округляется до двух знаков после запятой. Если не указано, используется значение по умолчанию
+        :param amount: сумма заказа в рублях. Округляется до двух знаков после запятой.
+        Если не указано, используется значение по умолчанию
         :type amount: ``int`` or ``float``, optional
         :param currency: валюта платежа. ``RUB`` - рубли,  ``KZT`` - тенге
         :type currency: ``str`` or None, optional
-        :param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата YYYY-MM-DDThh:mm:ss+hh:mm.
+        :param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или
+        строку формата YYYY-MM-DDThh:mm:ss+hh:mm.
         :type expiration: ``int``, ``datetime`` or ``str``, optional
-        :param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.
+        :param lifetime: время жизни счета в минутах. Если параметр ``expiration``
+        не указан, то будет автоматически сгенерируется дата
+        для закрытия через ``lifetime`` минут.
         :type lifetime: ``int``, optional, default=30
-        :param customer: объект QiwiCustomer или ``dict`` с полями phone, email и customer
+        :param customer: объект QiwiCustomer или ``dict`` с полями phone,
+        email и customer
         :type customer: ``QiwiCustomer`` or ``dict``, optional
         :param comment: комментарий к платежу. До 255 символов
         :type comment: ``str``, optional
-        :param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините.
+        :param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините
         :type fields: ``dict``, optional
         :raise QiwiError: объект ответа Qiwi, если запрос не увенчался успехом
         :return: Объект счета при успешном выполнении
         :rtype: Bill
         """
         logger.info(
-            f"bill args: bill_id: {bill_id}, amount: {amount}, currency: {currency}, expiration: {expiration}, "
+            f"bill args: bill_id: {bill_id}, amount: {amount}, currency: {currency}, "
+            f"expiration: {expiration}, "
             f"lifetime: {lifetime}, customer: {customer}, fields: {fields}"
         )
         bill_id = (
             bill_id
-            or f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-{int(random.random() * 1000)}"
+            or f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-"
+               f"{int(random.random() * 1000)}"
         )
 
         amount = amount or self.default_amount
@@ -188,8 +199,10 @@ class AioQiwiP2P:
             "customFields": fields or dict(),
         }
         logger.info(
-            f"bill request: bill_id: {bill_id}, amount: {amount}, currency: {currency}, expiration: "
-            f"{expiration}, lifetime: {lifetime}, customer: {customer}, fields: {fields}"
+            f"bill request: bill_id: {bill_id}, amount: {amount}, "
+            f"currency: {currency}, expiration: "
+            f"{expiration}, lifetime: {lifetime}, "
+            f"customer: {customer}, fields: {fields}"
         )
         qiwi_raw_response = await self.client.put(
             f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
