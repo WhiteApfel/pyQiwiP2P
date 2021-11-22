@@ -13,7 +13,6 @@ from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
 
 logger.disable("pyqiwip2p")
-requests = httpx.Client()
 
 
 class QiwiP2P:
@@ -46,10 +45,23 @@ class QiwiP2P:
         self.auth_key = auth_key
         self.default_amount = default_amount
         self.is_async = False
+        self._client: httpx.Client = None
         self.alt = alt
         if currency not in ["RUB", "KZT"]:
             raise ValueError('Currency must be "RUB" or "KZT"')
         self.currency = currency
+
+    @property
+    def client(self):
+        if not self._client:
+            self._client = httpx.Client()
+        return self._client
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        return self.client.close()
 
     @staticmethod
     def is_qiwi_ip(ip: str, qiwi_ips=None, *args, **kwargs):
@@ -187,7 +199,7 @@ class QiwiP2P:
             f"{expiration}, lifetime: {lifetime}, "
             f"customer: {customer}, fields: {fields}"
         )
-        qiwi_raw_response = requests.put(
+        qiwi_raw_response = self.client.put(
             f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
             json=qiwi_request_data,
             headers=qiwi_request_headers,
@@ -213,7 +225,7 @@ class QiwiP2P:
             "Authorization": f"Bearer {self.auth_key}",
         }
 
-        qiwi_raw_response = requests.get(
+        qiwi_raw_response = self.client.get(
             f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}",
             headers=qiwi_request_headers,
         )
@@ -237,7 +249,7 @@ class QiwiP2P:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.auth_key}",
         }
-        qiwi_raw_response = requests.post(
+        qiwi_raw_response = self.client.post(
             f"https://api.qiwi.com/partner/bill/v1/bills/{bill_id}/reject",
             headers=qiwi_request_headers,
         )
