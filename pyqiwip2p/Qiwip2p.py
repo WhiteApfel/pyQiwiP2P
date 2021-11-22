@@ -191,7 +191,7 @@ class QiwiP2P:
             else QiwiCustomer(json_data=customer).dict
             if customer
             else {},
-            "customFields": fields or dict(),
+            "customFields": fields or {},
         }
         logger.info(
             f"bill request: bill_id: {bill_id}, amount: {amount}, "
