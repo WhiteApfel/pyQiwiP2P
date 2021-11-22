@@ -112,7 +112,7 @@ class AioQiwiP2P:
                 "91.213.51.0/24",
             ]
         ip = IPv4Address(ip)
-        is_qiwi = any([ip in IPv4Network(net) for net in qiwi_ips])
+        is_qiwi = any(ip in IPv4Network(net) for net in qiwi_ips)
         logger.log(
             "debug" if is_qiwi else "warning",
             f"is_qiwi_ip: {ip} {'not ' if not is_qiwi else ''} in {qiwi_ips}",
