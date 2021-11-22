@@ -47,7 +47,7 @@ class AioQiwiP2P:
         self.auth_key = auth_key
         self.default_amount = default_amount
         self.is_async = False
-        self.client = httpx.AsyncClient()
+        self._client: httpx.AsyncClient = None
         self.alt = alt
         if currency not in ["RUB", "KZT"]:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
@@ -72,6 +72,12 @@ class AioQiwiP2P:
         except json.decoder.JSONDecodeError:
             ...
         raise ValueError("Invalid token")
+
+    @property
+    def client(self):
+        if not self._client:
+            self._client = httpx.AsyncClient()
+        return self._client
 
     async def __aenter__(self):
         return self
