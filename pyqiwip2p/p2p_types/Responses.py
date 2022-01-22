@@ -61,15 +61,19 @@ class Bill:
             try:
                 self.r_json = self.r_json.json()
             except json.decoder.JSONDecodeError:
-                fn = f"QiwiCrash_{int(time.time())}.html"
+                fn = f"QiwiCrash_{int(time.time())}.txt"
                 Reporter(response).save(fn)
                 raise ValueError(
                     f"Code: {response.status_code}. "
                     f"Qiwi response is not JSON. This is Qiwi-side bug. "
                     f"Please try again later or check response. "
-                    f"Qiwi response saved to{fn}"
+                    f"Qiwi response saved to {fn}. "
+                    f"P.S. The number of requests per minute may have been exceeded. "
+                    f"You can wait, change auth_key or cry."
                 )
         if "errorCode" in self.r_json:
+            fn = f"QiwiCrash_{int(time.time())}.txt"
+            Reporter(response).save(fn)
             raise QiwiError(self.r_json)
 
         self.site_id: int = self.r_json["siteId"]
