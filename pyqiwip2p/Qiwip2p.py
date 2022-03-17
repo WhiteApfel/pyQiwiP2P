@@ -8,6 +8,7 @@ from ipaddress import IPv4Network, IPv4Address
 import httpx
 from loguru import logger
 
+from p2p_types import PaymentMethods
 from pyqiwip2p.p2p_types import Bill
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
@@ -21,16 +22,13 @@ class QiwiP2P:
 
     **Аргументы и атрибуты**
 
-    :param auth_key: приватный ключ авторизации со страницы
-    https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.
+    :param auth_key: приватный ключ авторизации со страницы https://qiwi.com/p2p-admin/transfers/api. Нужен для работы с вашим аккаунтом.
     :type auth_key: ``str``
     :param default_amount: значение суммы счета по умолчанию для новых счетов.
     :type default_amount: ``int`` or ``float``, optional
-    :param currency: валюта для счетов в формате *Alpha-3 ISO 4217*.
-    Пока что API умеет работать только с *RUB* и *KZT*
+    :param currency: валюта для счетов в формате *Alpha-3 ISO 4217*. Пока что API умеет работать только с *RUB* и *KZT*
     :type currency: ``str``, optional
-    :param alt: альтернативный домен для проксирующей ссылки.
-    По-умолчанию ``qp2p.0708.su``
+    :param alt: альтернативный домен для проксирующей ссылки. По-умолчанию ``qp2p.0708.su``
     :type alt: ``str``, optional
     """
 
@@ -116,33 +114,33 @@ class QiwiP2P:
         expiration: typing.Union[str, int, QiwiDatetime] = None,
         lifetime: int = 30,
         customer: typing.Union[QiwiCustomer, dict] = None,
-        comment: str = "via pyQiwiP2P made by WhiteApfel",
+        comment: str = "via pyQiwiP2P (WhiteApfel)",
+        pay_sources: list[str] = None,
+        theme_code: str = None,
         fields: dict = None,
     ) -> Bill:
         """
         Метод для выставления счета.
 
-        :param bill_id: идентификатор заказа/счета в вашей системе.
-        Если параметр не укзаан, генерируется строка, основанная на времени.
+        :param bill_id: идентификатор заказа/счета в вашей системе. Если параметр не укзаан, генерируется строка, основанная на времени.
         :type bill_id: ``str`` or ``int``, optional
-        :param amount: сумма заказа в рублях. Округляется до двух знаков после запятой.
-        Если не указано, используется значение по умолчанию
+        :param amount: сумма заказа в рублях. Округляется до двух знаков после запятой. Если не указано, используется значение по умолчанию
         :type amount: ``int`` or ``float``, optional
         :param currency: валюта платежа. ``RUB`` - рубли,  ``KZT`` - тенге
         :type currency: ``str`` or None, optional
-        :param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или
-        строку формата YYYY-MM-DDThh:mm:ss+hh:mm.
+        :param expiration: когда счет будет закрыт. Принимает: Timestamp, Datetime или строку формата ``YYYY-MM-DDThh:mm:ss+hh:mm``.
         :type expiration: ``int``, ``datetime`` or ``str``, optional
-        :param lifetime: время жизни счета в минутах. Если параметр ``expiration``
-        не указан, то будет автоматически сгенерируется дата для
-        закрытия через ``lifetime`` минут.
+        :param lifetime: время жизни счета в минутах. Если параметр ``expiration`` не указан, то будет автоматически сгенерируется дата для закрытия через ``lifetime`` минут.
         :type lifetime: ``int``, optional, default=30
-        :param customer: объект QiwiCustomer или ``dict``
-        с полями phone, email и customer
+        :param customer: объект QiwiCustomer или ``dict`` с полями phone, email и customer
         :type customer: ``QiwiCustomer`` or ``dict``, optional
         :param comment: комментарий к платежу. До 255 символов
         :type comment: ``str``, optional
-        :param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините
+        :param pay_sources: лист методов оплаты, которые хотим разрешить. Методы есть в классе PaymentMethods
+        :type pay_sources: ``list[str]``, optional
+        :param theme_code: код темы оформления, можно получить на сайте киви
+        :type theme_code: ``str``, optional
+        :param fields: словарь кастомных полей QIWI. Я ничего про них не понял, извините. Параметры pay_sources и theme_code перезаписывают соответствующие поля в fields
         :type fields: ``dict``, optional
         :raise QiwiError: объект ответа Qiwi, если запрос не увенчался успехом
         :return: Объект счета при успешном выполнении
@@ -153,6 +151,7 @@ class QiwiP2P:
             f"expiration: {expiration}, "
             f"lifetime: {lifetime}, customer: {customer}, fields: {fields}"
         )
+        fields = fields or {}
         bill_id = (
             bill_id
             or f"WhiteApfel-PyQiwiP2P-{str(int(time.time() * 100))[4:]}-"
@@ -177,11 +176,26 @@ class QiwiP2P:
             raise ValueError(f'Currency must be "RUB" or "KZT", not "{currency}"')
         currency = self.currency
 
+        if pay_sources is not None:
+            allowed_sources = [
+                PaymentMethods.qiwi,
+                PaymentMethods.card,
+                PaymentMethods.mobile,
+            ]
+            if isinstance(pay_sources, list) and all(i in allowed_sources for i in pay_sources):
+                fields['paySourcesFilter'] = ",".join(pay_sources)
+            else:
+                logger.warning("pay_sources must be list of str from PaymentMethods ('qw', 'card', 'mobile')")
+
+        if theme_code is not None:
+            fields['themeCode'] = theme_code
+
         qiwi_request_headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.auth_key}",
         }
+
         qiwi_request_data = {
             "amount": {"currency": currency, "value": amount},
             "comment": comment,
@@ -191,7 +205,7 @@ class QiwiP2P:
             else QiwiCustomer(json_data=customer).dict
             if customer
             else {},
-            "customFields": fields or {},
+            "customFields": fields,
         }
         logger.info(
             f"bill request: bill_id: {bill_id}, amount: {amount}, "
