@@ -156,17 +156,16 @@ async def main():
             "paySourcesFilter": "qw,card",
             "themeCode": "MalchikGay",
         }
-        p2p.bill(fields=fields)
+        await p2p.bill(fields=fields)
         
         # Либо же воспользоваться удобными полями
         
-        p2p.bill(pay_sources=[PaymentMethods.qiwi, PaymentMethods.card])
-        p2p.bill(pay_sources=[PaymentMethods.qiwi], theme_code="MalchikGay")
+        await p2p.bill(pay_sources=[PaymentMethods.qiwi, PaymentMethods.card])
+        await p2p.bill(pay_sources=[PaymentMethods.qiwi], theme_code="MalchikGay")
 
 p2p.run(main())
-# Короткий аналог
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(main())
+# Аналог
+# asyncio.run(main())
 ```
 
 ### И всё?
