@@ -11,7 +11,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import Route
 
-from pyqiwip2p.p2p_types.Responses import Bill
+from pyqiwip2p.p2p_types import Bill
 
 
 class AioQiwiNotify:

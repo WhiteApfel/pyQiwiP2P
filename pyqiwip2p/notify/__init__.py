@@ -6,7 +6,7 @@ import threading
 import cherrypy
 
 from pyqiwip2p.notify.async_client import AioQiwiNotify
-from pyqiwip2p.p2p_types.Responses import Bill
+from pyqiwip2p.p2p_types import Bill
 
 
 class QiwiNotify:
