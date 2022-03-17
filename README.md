@@ -1,6 +1,5 @@
 # pyQiwiP2P
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_shield)
 [![CodeFactor](https://www.codefactor.io/repository/github/whiteapfel/pyqiwip2p/badge)](https://www.codefactor.io/repository/github/whiteapfel/pyqiwip2p)
 
 ## Предисловие
@@ -57,7 +56,7 @@
 
 ```python
 from pyqiwip2p import QiwiP2P
-from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime
+from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime, PaymentMethods
 
 QIWI_PRIV_KEY = "abCdef...xYz"
 
@@ -90,6 +89,20 @@ new_bill = p2p.bill(bill_id=6627358)
 # В комбинации со стандартным значением суммы будет вот так
 new_bill = p2p.bill()
 print(new_bill.bill_id, new_bill.pay_url)
+
+# Чтобы запретить приём платежей через какой-то метод оплаты, например, карты,
+# необходимо передать paySourcesFilter в fields. Туда же можно передать themeCode
+
+fields = {
+    "paySourcesFilter": "qw,card",
+    "themeCode": "MalchikGay",
+}
+p2p.bill(fields=fields)
+
+# Либо же воспользоваться удобными полями
+
+p2p.bill(pay_sources=[PaymentMethods.qiwi, PaymentMethods.card])
+p2p.bill(pay_sources=[PaymentMethods.qiwi], theme_code="MalchikGay")
 ```
 
 ### А асинхронно могёте?
@@ -97,7 +110,7 @@ print(new_bill.bill_id, new_bill.pay_url)
 
 ```python
 from pyqiwip2p import AioQiwiP2P
-from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime
+from pyqiwip2p.p2p_types import QiwiCustomer, QiwiDatetime, PaymentMethods
 
 QIWI_PRIV_KEY = "abCdef...xYz"
 
@@ -115,10 +128,10 @@ async def main():
         print(new_bill.bill_id, new_bill.pay_url)
         
         # Проверим статус выставленного счета
-        print(await p2p.check(bill_id=new_bill.bill_id).status)
+        print((await p2p.check(bill_id=new_bill.bill_id)).status)
         
         # Потеряли ссылку на оплату счета? Не проблема!
-        print(await p2p.check(bill_id=245532).pay_url)
+        print((await p2p.check(bill_id=245532)).pay_url)
         
         # Клиент отменил заказ? Тогда и счет надо закрыть
         await p2p.reject(bill_id=new_bill.bill_id)
@@ -132,6 +145,20 @@ async def main():
         # В комбинации со стандартным значением суммы будет вот так
         new_bill = await p2p.bill()
         print(new_bill.bill_id, new_bill.pay_url)
+        
+        # Чтобы запретить приём платежей через какой-то метод оплаты, например, карты,
+        # необходимо передать paySourcesFilter в fields. Туда же можно передать themeCode
+        
+        fields = {
+            "paySourcesFilter": "qw,card",
+            "themeCode": "MalchikGay",
+        }
+        p2p.bill(fields=fields)
+        
+        # Либо же воспользоваться удобными полями
+        
+        p2p.bill(pay_sources=[PaymentMethods.qiwi, PaymentMethods.card])
+        p2p.bill(pay_sources=[PaymentMethods.qiwi], theme_code="MalchikGay")
 
 p2p.run(main())
 # Короткий аналог
@@ -233,6 +260,3 @@ server {
 
 **P.S. за неприходящие от Qiwi запросы ответственность не несу, как и за приходящие, кстати, тоже.
 Если запроса от Qiwi не было, то пишите им в поддержку [@qiwi_api_help_bot](https://t.me/qiwi_api_help_bot)**
-
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FWhiteApfel%2FpyQiwiP2P?ref=badge_large)
