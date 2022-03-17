@@ -7,7 +7,7 @@ from response_report import Reporter
 
 from pyqiwip2p.p2p_types import QiwiCustomer
 from pyqiwip2p.p2p_types import QiwiDatetime
-from pyqiwip2p.p2p_types.Errors import QiwiError
+from pyqiwip2p.p2p_types import QiwiError
 
 
 class Bill:
