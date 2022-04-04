@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3.9-slim
 LABEL maintainer="WhiteApfel white@pfel.ru"
 WORKDIR /app
 COPY . .
