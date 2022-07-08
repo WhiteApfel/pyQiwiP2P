@@ -67,7 +67,7 @@ class QiwiNotify:
             def check_headers(self, headers):
                 if (
                     "content-type" in headers
-                    and headers["content-type"] == "application/json"
+                    and headers["content-type"] == "application/json;charset=UTF-8"
                     and "X-Api-Signature-SHA256" in headers
                 ):
                     return True
