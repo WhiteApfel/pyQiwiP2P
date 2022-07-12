@@ -1,9 +1,9 @@
 import asyncio
+
 from hypercorn import Config
 from hypercorn.asyncio import serve
-from starlette.applications import Starlette
-
 from server import router
+from starlette.applications import Starlette
 
 app = Starlette()
 

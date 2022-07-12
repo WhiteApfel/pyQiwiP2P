@@ -1,8 +1,10 @@
-from typing import Union
-import pytest
 import time
-from pyqiwip2p.p2p_types import QiwiDatetime
 from datetime import timedelta
+from typing import Union
+
+import pytest
+
+from pyqiwip2p.p2p_types import QiwiDatetime
 
 
 @pytest.mark.parametrize("lifetime", [2, 13, 33, 20, 30])

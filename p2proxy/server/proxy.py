@@ -1,7 +1,7 @@
 import os
 
 import validators
-from starlette.responses import RedirectResponse, HTMLResponse
+from starlette.responses import HTMLResponse, RedirectResponse
 from starlette.routing import Router
 
 router = Router()

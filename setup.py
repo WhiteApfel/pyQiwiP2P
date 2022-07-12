@@ -1,7 +1,7 @@
+from io import open
 from os import environ
 
 from setuptools import setup
-from io import open
 
 
 def read(filename):

@@ -1,18 +1,16 @@
 from __future__ import annotations
+
 import json
 import random
 import time
 import typing
 from base64 import b64decode
-from ipaddress import IPv4Network, IPv4Address
+from ipaddress import IPv4Address, IPv4Network
 
 import httpx
 from loguru import logger
 
-from pyqiwip2p.p2p_types import PaymentMethods
-from pyqiwip2p.p2p_types import Bill
-from pyqiwip2p.p2p_types import QiwiCustomer
-from pyqiwip2p.p2p_types import QiwiDatetime
+from pyqiwip2p.p2p_types import Bill, PaymentMethods, QiwiCustomer, QiwiDatetime
 
 logger.disable("pyqiwip2p")
 
@@ -186,13 +184,17 @@ class QiwiP2P:
                 PaymentMethods.card,
                 PaymentMethods.mobile,
             ]
-            if isinstance(pay_sources, list) and all(i in allowed_sources for i in pay_sources):
-                fields['paySourcesFilter'] = ",".join(pay_sources)
+            if isinstance(pay_sources, list) and all(
+                i in allowed_sources for i in pay_sources
+            ):
+                fields["paySourcesFilter"] = ",".join(pay_sources)
             else:
-                logger.warning("pay_sources must be list of str from PaymentMethods ('qw', 'card', 'mobile')")
+                logger.warning(
+                    "pay_sources must be list of str from PaymentMethods ('qw', 'card', 'mobile')"
+                )
 
         if theme_code is not None:
-            fields['themeCode'] = theme_code
+            fields["themeCode"] = theme_code
 
         qiwi_request_headers = {
             "Accept": "application/json",
