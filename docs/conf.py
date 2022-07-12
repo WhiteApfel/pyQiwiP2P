@@ -15,14 +15,14 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../"))
 sys.path.append("/home/white/PycharmProjects/pyQiwiP2P/")
-sys.path.insert(0, "/usr/lib/python3.8/site-packages")
+sys.path.insert(0, "/usr/lib/python3.10/site-packages")
 sys.path.insert(0, os.path.abspath("../.."))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "PyQiwiP2P"
-copyright = "2020, WhiteApfel"
+copyright = "2020-2022, WhiteApfel"
 author = "WhiteApfel"
 
 
