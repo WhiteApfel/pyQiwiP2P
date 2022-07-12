@@ -4,16 +4,17 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Документация PyQiwiP2P приветствует тебя! &#8212; документация PyQiwiP2P </title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/translations.js"></script>
     
     <link rel="index" title="Алфавитный указатель" href="genindex.html" />
@@ -39,21 +40,56 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyqiwip2p">
-<h1>Документация PyQiwiP2P приветствует тебя!<a class="headerlink" href="#pyqiwip2p" title="Ссылка на этот заголовок">¶</a></h1>
-<p>Обёрточка для <a class="reference external" href="https://developer.qiwi.com/ru/p2p-payments/#API">API Qiwi P2P</a> на Python.</p>
-<div class="section" id="id1">
-<h2>Зависимости<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setuptools</span>
-<span class="n">requests</span>
-<span class="n">phonenumbers</span>
-<span class="n">email_validator</span>
-<span class="n">CherryPy</span>
+  <section id="pyqiwip2p">
+<h1>Документация PyQiwiP2P приветствует тебя!<a class="headerlink" href="#pyqiwip2p" title="Permalink to this heading">¶</a></h1>
+<p>Удобная обёрточка для <a class="reference external" href="https://developer.qiwi.com/ru/p2p-payments/#API">API Qiwi P2P</a> на Python.</p>
+<section id="id1">
+<h2>Важное уведомление<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>С июня Qiwi начала блокировать кошельки, если пользователь открыл
+страницу оплаты «напрямую», тем самым не передав заголовок referer.</p>
+<p><strong>Это случается при открытии ссылки:</strong></p>
+<ul class="simple">
+<li><p>из мессенджера</p></li>
+<li><p>из смс</p></li>
+<li><p>из письма</p></li>
+<li><p>из адресной строки</p></li>
+<li><p>из браузера с повышенным режимом приватности или расширениями для приватного просмотра</p></li>
+</ul>
+<p>Для обхода всех проблем, кроме последней (она не решается), к объекту
+<code class="docutils literal notranslate"><span class="pre">Bill</span></code> был добавлен атрибут <code class="docutils literal notranslate"><span class="pre">Bill.alt_url</span></code>, который предоставляет ссылку
+для перенаправления на страницу оплаты через специальную
+страницу-прокладу, добавляющую этот самый referer.</p>
+<p>Страница предоставлена мною, но её можно поднять на своём сервере
+с помощью docker-контейнера.</p>
+<ul class="simple">
+<li><p>Исходники: <a class="reference external" href="https://github.com/WhiteApfel/pyQiwiP2P/tree/master/p2proxy">Github</a></p></li>
+<li><p>Образ контейнера: <code class="docutils literal notranslate"><span class="pre">ghcr.io/whiteapfel/pyqiwip2p:p2proxy</span></code></p></li>
+<li><p>Запуск: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-p</span> <span class="pre">3600:3600</span> <span class="pre">-d</span> <span class="pre">ghcr.io/whiteapfel/pyqiwip2p:p2proxy</span></code></p></li>
+<li><p>Свой домен в клиенте: <code class="docutils literal notranslate"><span class="pre">p2p</span> <span class="pre">=</span> <span class="pre">AioQiwiP2P(PrivKey,</span> <span class="pre">alt=&quot;example.com&quot;)</span></code></p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>Зависимости<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setuptools</span><span class="o">&gt;=</span><span class="mf">63.1.0</span>
+<span class="n">phonenumbers</span><span class="o">&gt;=</span><span class="mf">8.12.15</span>
+<span class="n">email_validator</span><span class="o">&gt;=</span><span class="mf">1.2.1</span>
+<span class="n">typing</span><span class="o">&gt;=</span><span class="mf">3.7.4.3</span>
+<span class="n">Hypercorn</span><span class="o">&gt;=</span><span class="mf">0.11.2</span>
+<span class="n">starlette</span><span class="o">&gt;=</span><span class="mf">0.19.0</span>
+<span class="n">httpx</span><span class="o">&gt;=</span><span class="mf">0.23.0</span>
+<span class="n">pydantic</span><span class="o">&gt;=</span><span class="mf">1.9.1</span>
+<span class="n">validators</span><span class="o">&gt;=</span><span class="mf">0.20.0</span>
+<span class="n">ipaddress</span><span class="o">~=</span><span class="mf">1.0.23</span>
+<span class="n">loguru</span><span class="o">&gt;=</span><span class="mf">0.6.0</span>
+<span class="n">python</span><span class="o">-</span><span class="n">dotenv</span><span class="o">&gt;=</span><span class="mf">0.20.0</span>
+<span class="n">pytest</span><span class="o">&gt;=</span><span class="mf">7.1.2</span>
+<span class="n">CherryPy</span><span class="o">&gt;=</span><span class="mf">18.7.0</span>
+<span class="n">response</span><span class="o">-</span><span class="n">report</span><span class="o">~=</span><span class="mf">1.1.0</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id2">
-<h2>Установка<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+</section>
+<section id="id3">
+<h2>Установка<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p>Через pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">update</span> <span class="n">pyqiwip2p</span>
 </pre></div>
@@ -66,17 +102,25 @@
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Use.html">Как пользоваться</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use.html">Как пользоваться</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Use.html#id2">Синхронный режим</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Use.html#id3">Асинхронный режим</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Client.html">Клиент</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Types.html">Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Notify.html">Уведомления о счетах</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="NotifyUse.html">Как пользоваться уведомлениями</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NotifyUse.html">Как пользоваться уведомлениями</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NotifyUse.html#id2">Асинхронный сервер</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NotifyUse.html#id3">Синхронный сервер</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -85,18 +129,23 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Оглавление</a></h3>
-  <ul>
+  <div>
+    <h3><a href="#">Оглавление</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Документация PyQiwiP2P приветствует тебя!</a><ul>
-<li><a class="reference internal" href="#id1">Зависимости</a></li>
-<li><a class="reference internal" href="#id2">Установка</a></li>
+<li><a class="reference internal" href="#id1">Важное уведомление</a></li>
+<li><a class="reference internal" href="#id2">Зависимости</a></li>
+<li><a class="reference internal" href="#id3">Установка</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Следующий раздел</h4>
-  <p class="topless"><a href="Use.html"
-                        title="следующая глава">Как пользоваться</a></p>
+  </div>
+  <div>
+    <h4>Следующий раздел</h4>
+    <p class="topless"><a href="Use.html"
+                          title="следующая глава">Как пользоваться</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>Эта страница</h3>
     <ul class="this-page-menu">
@@ -108,12 +157,12 @@
   <h3 id="searchlabel">Быстрый поиск</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Искать" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -132,8 +181,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, WhiteApfel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+        &#169; Copyright 2020-2022, WhiteApfel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

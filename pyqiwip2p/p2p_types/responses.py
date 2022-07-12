@@ -45,12 +45,11 @@ class Bill:
     :type customer: QiwiCustomer
     :param fields: кастомные поля Qiwi
     :type fields: ``dict``
-    :param json: исходный словарь Qiwi на случай,
-    если они что-то обновят или у меня что-то не работает
+    :param json: исходный словарь Qiwi на случай, если они что-то обновят или у меня что-то не работает
     :type json: ``dict``
-    :param alt_url: ссылка с проксированием через сервер
-    для установления заголовка referer
+    :param alt_url: ссылка с проксированием через сервер для установления заголовка referer
     :type alt_url: ``str``
+
     """
 
     def __init__(self, response: typing.Union[Response, dict], alt="qp2p.0708.su"):
