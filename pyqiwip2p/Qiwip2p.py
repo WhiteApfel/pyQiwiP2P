@@ -1,11 +1,13 @@
-from __future__ import annotations
-
 import json
 import random
+import sys
 import time
 import typing
 from base64 import b64decode
 from ipaddress import IPv4Address, IPv4Network
+
+if sys.version_info < (3, 10):
+    from __future__ import annotations
 
 import httpx
 from loguru import logger
