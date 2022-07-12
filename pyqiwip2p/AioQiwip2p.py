@@ -41,8 +41,10 @@ class AioQiwiP2P:
         default_amount: int = 100,
         currency: str = "RUB",
         alt="qp2p.0708.su",
+        skip_key_validation: bool = False,
     ):
-        self.validate_privkey(auth_key)
+        if not skip_key_validation:
+            self.validate_privkey(auth_key)
         self.auth_key = auth_key
         self.default_amount = default_amount
         self.is_async = False
