@@ -46,9 +46,9 @@ class QiwiCustomer:
         ignore_args: bool = False,
     ):
         if json_data:
-            self.phone = json_data["phone"]
-            self.email = json_data["email"]
-            self.account = json_data["account"]
+            self.phone = json_data.get("phone")
+            self.email = json_data.get("email")
+            self.account = json_data.get("account")
         else:
             if all([phone, email, account]) or ignore_args:
                 if ignore_valid:
