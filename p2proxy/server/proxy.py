@@ -3,7 +3,7 @@ import os
 import validators
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from starlette.routing import Router, Route
+from starlette.routing import Route, Router
 
 router = Router()
 
