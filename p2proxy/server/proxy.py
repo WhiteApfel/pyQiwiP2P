@@ -3,9 +3,7 @@ import os
 import validators
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from starlette.routing import Route, Router
-
-router = Router()
+from starlette.routing import Route
 
 
 async def ref_redirect_vk(request: Request):

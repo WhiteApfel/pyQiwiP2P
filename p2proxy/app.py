@@ -2,12 +2,10 @@ import asyncio
 
 from hypercorn import Config
 from hypercorn.asyncio import serve
-from server import router
+from server import routes
 from starlette.applications import Starlette
 
-app = Starlette()
-
-app.mount("", router)
+app = Starlette(routes=routes)
 
 if __name__ == "__main__":
     config = Config()

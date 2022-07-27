@@ -1,1 +1,1 @@
-from server.proxy import router
+from .proxy import routes
