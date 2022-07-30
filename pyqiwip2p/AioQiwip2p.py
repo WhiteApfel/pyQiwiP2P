@@ -125,7 +125,7 @@ class AioQiwiP2P:
         lifetime: int = 30,
         customer: typing.Union[QiwiCustomer, dict] = None,
         comment: str = "via pyQiwiP2P (WhiteApfel)",
-        pay_sources: list[str] = None,
+        pay_sources: typing.List[str] = None,
         theme_code: str = None,
         fields: dict = None,
     ) -> Bill:
