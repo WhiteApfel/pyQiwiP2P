@@ -5,6 +5,7 @@ import time
 import typing
 from base64 import b64decode
 from ipaddress import IPv4Address, IPv4Network
+from typing import List
 
 import httpx
 from loguru import logger
@@ -125,7 +126,7 @@ class AioQiwiP2P:
         lifetime: int = 30,
         customer: typing.Union[QiwiCustomer, dict] = None,
         comment: str = "via pyQiwiP2P (WhiteApfel)",
-        pay_sources: list[str] = None,
+        pay_sources: List[str] = None,
         theme_code: str = None,
         fields: dict = None,
     ) -> Bill:
