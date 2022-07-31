@@ -2,11 +2,11 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/whiteapfel/pyqiwip2p/badge)](https://www.codefactor.io/repository/github/whiteapfel/pyqiwip2p)
 
-## Предисловие
+## Поддержка прекращена
 
-### Хорошие альтернативы
+Есть более качественный инструмент, полностью покрывающий функции pyQiwiP2P: [glQiwiApi](https://github.com/GLEF1X/glQiwiApi)
 
-* [glQiwiApi](https://github.com/GLEF1X/glQiwiApi)
+Возможно, здесь когда-нибудь будет гайд по миграции на него, но всё в руках сообщества
 
 ### О библиотеке
 
