@@ -1,3 +1,4 @@
+import binascii
 import json
 import random
 import time
@@ -91,21 +92,24 @@ class QiwiP2P:
         return is_qiwi
 
     def validate_privkey(self, privkey):
-        key_decoded = b64decode(privkey).decode()
+        try:
+            key_decoded = b64decode(privkey).decode()
+        except (binascii.Error, UnicodeDecodeError) as e:
+            raise ValueError('You passed crap instead of a private p2p token') from e
         try:
             key_decoded = json.loads(key_decoded)
             if "version" in key_decoded and "data" in key_decoded:
                 key_data = key_decoded["data"]
                 if (
-                    "payin_merchant_site_uid" in key_data
-                    and "user_id" in key_data
-                    and "secret" in key_data
+                        "payin_merchant_site_uid" in key_data
+                        and "user_id" in key_data
+                        and "secret" in key_data
                 ):
                     if key_decoded["version"] == "P2P":
                         return True
         except json.decoder.JSONDecodeError:
             ...
-        raise ValueError("Invalid token")
+        raise ValueError("You passed crap instead of a private p2p token")
 
     def bill(
         self,

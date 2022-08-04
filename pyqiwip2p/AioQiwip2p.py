@@ -1,4 +1,5 @@
 import asyncio
+import binascii
 import json
 import random
 import time
@@ -55,7 +56,10 @@ class AioQiwiP2P:
         )
 
     def validate_privkey(self, privkey):
-        key_decoded = b64decode(privkey).decode()
+        try:
+            key_decoded = b64decode(privkey).decode()
+        except (binascii.Error, UnicodeDecodeError) as e:
+            raise ValueError('You passed crap instead of a private p2p token') from e
         try:
             key_decoded = json.loads(key_decoded)
             if "version" in key_decoded and "data" in key_decoded:
@@ -69,7 +73,7 @@ class AioQiwiP2P:
                         return True
         except json.decoder.JSONDecodeError:
             ...
-        raise ValueError("Invalid token")
+        raise ValueError("You passed crap instead of a private p2p token")
 
     @property
     def client(self):
