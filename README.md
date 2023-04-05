@@ -20,7 +20,69 @@
  1. Свойство ``Bill.actual`` было удалено из-за PEP8
  2. ``QiwiNotify`` по умолчанию выполняет только функцию по первому подошедшему хендлеру
 
-### ⚠️ Важное уведомление
+### ⚠️ Важное уведомление [2023.04.05]
+
+Выпуск ключей для приёма P2P платежей через сайт официально закрыт, 
+но метод, заявленный в [документации QIWI](https://github.com/QIWI-API/qiwi-wallet-personal-docs/blob/94cf6b68a12dea916d99144b4f7a12ab810753d5/_payment_ru.html.md#выпуск-токена-p2p-p2p-token), 
+продолжает работать, хоть и с несколько изменённой авторизацией. 
+
+Инструкция:
+
+1. Переходим на https://qiwi.com/p2p-admin
+2. Авторизуемся в свой Qiwi аккаунт
+3. Открываем консоль браузера. [Как?](https://duckduckgo.com/?q=Как+открыть+консоль+браузера)
+4. Вставляем код из первого блока и нажимаем enter
+5. Вставляем код из второго блока и нажимаем enter
+6. Если прошло успешно:
+   * появится строка "Private Key: <KEY>"
+   * копируем ключ, и используем по назначению
+7. Если что-то пошло не так:
+   * смириться, что накосячили
+   * меня не тревожить
+   * мне в личку не писать
+   * кусаюсь и кидаю в чс
+
+```javascript
+function createKeys(name, notification_url) {
+    let p2pApiData = JSON.parse(localStorage.getItem("p2p-admin-checkout-oauth-token-head"))
+    let token = btoa(p2pApiData["client_id"] + ":" + p2pApiData["access_token"]).replaceAll("=", "")
+
+    let body = {
+        keysPairName: name
+    }
+
+    if (notification_url) {
+        body.serverNotificationsUrl = notification_url
+    }
+
+    fetch('https://edge.qiwi.com/widgets-api/api/p2p/protected/keys/create', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': "TokenHeadV2 " + token
+        },
+        body: JSON.stringify(body),
+        credentials: 'include',
+    })
+    .then(response => {
+        console.log(response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        console.log("Private Key: "+ data.result.secretKey)
+    })
+    .catch(error => console.error(error));
+}
+```
+```javascript
+createKeys("Tokens by WhiteApfel")
+// or
+createKeys("Tokens by WhiteApfel", "https://qiwi.example.com/any")
+```
+
+### ⚠️ Важное уведомление [2021.06.13]
 
 С июня Qiwi начала блокировать кошельки, если пользователь открыл
 страницу оплаты "напрямую", тем самым не передав заголовок referer.
