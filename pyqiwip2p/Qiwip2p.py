@@ -39,7 +39,6 @@ class QiwiP2P:
     ):
         if not skip_key_validation:
             self.validate_privkey(auth_key)
-        self.validate_privkey(auth_key)
         self.auth_key = auth_key
         self.default_amount = default_amount
         self.is_async = False
