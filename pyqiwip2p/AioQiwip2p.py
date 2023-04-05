@@ -1,10 +1,12 @@
 import asyncio
+import binascii
 import json
 import random
 import time
 import typing
 from base64 import b64decode
 from ipaddress import IPv4Address, IPv4Network
+from typing import List
 
 import httpx
 from loguru import logger
@@ -54,7 +56,10 @@ class AioQiwiP2P:
         )
 
     def validate_privkey(self, privkey):
-        key_decoded = b64decode(privkey).decode()
+        try:
+            key_decoded = b64decode(privkey).decode()
+        except (binascii.Error, UnicodeDecodeError) as e:
+            raise ValueError('You passed crap instead of a private p2p token') from e
         try:
             key_decoded = json.loads(key_decoded)
             if "version" in key_decoded and "data" in key_decoded:
@@ -68,7 +73,7 @@ class AioQiwiP2P:
                         return True
         except json.decoder.JSONDecodeError:
             ...
-        raise ValueError("Invalid token")
+        raise ValueError("You passed crap instead of a private p2p token")
 
     @property
     def client(self):
@@ -125,7 +130,7 @@ class AioQiwiP2P:
         lifetime: int = 30,
         customer: typing.Union[QiwiCustomer, dict] = None,
         comment: str = "via pyQiwiP2P (WhiteApfel)",
-        pay_sources: list[str] = None,
+        pay_sources: List[str] = None,
         theme_code: str = None,
         fields: dict = None,
     ) -> Bill:
