@@ -30,7 +30,7 @@ class QiwiDatetime:
         if lifetime:
             self.expiration(lifetime)
         else:
-            self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}[+-][0-1][0-9]:[0-5][0-9]"
+            self._exp_regex = r"[0-9]{4}-[01][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]+[+-][0-1][0-9]:[0-5][0-9]"
             self.datetime: datetime = self.now_datetime()
             self.qiwi = self.datetime.isoformat()
             self.timestamp = self.datetime.timestamp()
